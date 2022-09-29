@@ -17,24 +17,17 @@ public class playerController : MonoBehaviour
 
     [SerializeField] private bool isUsingKeyboard;
     [SerializeField] private Camera rayCam;
+    [SerializeField] private Transform rayCamPivot;
     
     [SerializeField] private GameObject debugCube;
 
 
 
 
-
-
-
     void Update()
-    {
-        if (isUsingKeyboard) {GetKeyboardInput();}
-        else { GetControllerInput();}
-
-        RotateRigidBody();
-
-        RotateModel();
-
+    {     
+        if (isUsingKeyboard) {KeyboardUpdate();}
+        else { ControllerUpdate();}
     }
 
 
@@ -44,19 +37,18 @@ public class playerController : MonoBehaviour
         model.transform.position = playerRb.position;
     }
 
-
-    void GetControllerInput()
+    void KeyboardUpdate()
     {
-        Vector2 stickInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if (stickInput.magnitude < deadzone) { stickInput = Vector2.zero; }
-        leftInput = new Vector3(stickInput.x, 0, stickInput.y);
+        GetKeyboardInput();
+        RotateRigidBody();
+        RotateModel();
+    }
 
-        
-        stickInput = new Vector2(Input.GetAxisRaw("HorizontalRight"), Input.GetAxisRaw("VerticalRight"));
-        if (stickInput.magnitude < deadzone) { stickInput = Vector2.zero; }
-        rightInput = new Vector3(stickInput.x, 0, stickInput.y);
-        rightInput = rightInput.ToIso();
-
+    void ControllerUpdate()
+    {
+        GetControllerInput();
+        RotateRigidBody();
+        RotateModel();
     }
 
     void GetKeyboardInput()
@@ -64,21 +56,30 @@ public class playerController : MonoBehaviour
         Vector2 keyboardInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         leftInput = new Vector3(keyboardInput.x, 0, keyboardInput.y);
 
-        Ray camRay = rayCam.ScreenPointToRay(Input.mousePosition);
-        Plane rayPlane = new Plane(Vector3.up, new Vector3(this.transform.position.x, this.transform.position.y + 0.201f, this.transform.position.z));
+        rayCamPivot.position = new Vector3(0,this.transform.position.y, 0);
+        Ray ray = this.rayCam.ScreenPointToRay(Input.mousePosition);
+        Plane rayPlane = new Plane(Vector3.up, new Vector3(0, this.transform.position.y + 0.2f, 0));
         float rayLength;
 
-        if(rayPlane.Raycast(camRay, out rayLength))
+        if(rayPlane.Raycast(ray, out rayLength))
         {
-            Vector3 hitPoint = camRay.GetPoint(rayLength);
-            Debug.DrawLine(camRay.origin, hitPoint, Color.red);
-            
+            Vector3 hitPoint = ray.GetPoint(rayLength);
+            Debug.DrawLine(ray.origin, hitPoint, Color.red);
             rightInput = new Vector3(hitPoint.x, 0, hitPoint.z).normalized;
         }
+    }
 
-        Debug.Log(rightInput);
+    void GetControllerInput()
+    {
+        Vector2 stickInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (stickInput.magnitude < deadzone) { stickInput = Vector2.zero; }
+        leftInput = new Vector3(stickInput.x, 0, stickInput.y);
 
 
+        stickInput = new Vector2(Input.GetAxisRaw("HorizontalRight"), Input.GetAxisRaw("VerticalRight"));
+        if (stickInput.magnitude < deadzone) { stickInput = Vector2.zero; }
+        rightInput = new Vector3(stickInput.x, 0, stickInput.y);
+        rightInput = rightInput.ToIso();
 
     }
 
