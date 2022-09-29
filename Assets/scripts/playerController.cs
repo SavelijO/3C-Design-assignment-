@@ -65,13 +65,13 @@ public class playerController : MonoBehaviour
 
             Quaternion isoRot = Quaternion.LookRotation(leftInput.ToIso(), Vector3.up);
 
-            model.transform.rotation = Quaternion.RotateTowards(model.transform.rotation, isoRot, rotSpeed * Time.deltaTime);
+            model.transform.rotation = Quaternion.RotateTowards(model.transform.rotation, isoRot, rotSpeed * 360 *Time.deltaTime);
         }
         if(rightInput != Vector3.zero)
         {
             Quaternion isoRot = Quaternion.LookRotation(rightInput.ToIso(), Vector3.up);
             
-            model.transform.rotation = Quaternion.RotateTowards(model.transform.rotation, isoRot, rotSpeed * Time.deltaTime);
+            model.transform.rotation = Quaternion.RotateTowards(model.transform.rotation, isoRot, rotSpeed *  360 * Time.deltaTime);
         }
 
     }

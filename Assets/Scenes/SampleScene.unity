@@ -556,7 +556,7 @@ MonoBehaviour:
   rightInput: {x: 0, y: 0, z: 0}
   playerRb: {fileID: 633058034}
   movSpeed: 4.5
-  rotSpeed: 1080
+  rotSpeed: 3
   model: {fileID: 2128164554}
   deadzone: 0.25
 --- !u!54 &633058034
