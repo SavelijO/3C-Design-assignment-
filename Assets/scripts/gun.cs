@@ -8,6 +8,9 @@ public class gun : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float fireRate;
     [SerializeField] private float bulletForce;
+    [SerializeField] private Camera shootCam;
+
+
 
     private float nextFire = 0f;
     void Update()
@@ -20,8 +23,23 @@ public class gun : MonoBehaviour
 
     void Fire()
     {
+        Ray ray = shootCam.ViewportPointToRay(new Vector3(0.5f,0.5f,0));
+        RaycastHit hit;
+
+        Vector3 targetPoint;
+        if(Physics.Raycast(ray, out hit))
+        {
+            targetPoint = hit.point;
+        }
+        else
+        {
+            targetPoint = ray.GetPoint(75);
+        }
+
+        Debug.DrawLine(ray.origin, hit.point, Color.red);
+
+
+
         nextFire = Time.time + fireRate;
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.transform.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().AddForce(firePoint.forward * bulletForce, ForceMode.Impulse);
     }
 }
