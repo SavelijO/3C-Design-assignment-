@@ -44,6 +44,11 @@ public class gun : MonoBehaviour
 
         StartCoroutine(SpawnTrail(trail, hit));
 
+        if(hit.collider.GetComponent<GameObject>().tag == "Enemy")
+        {
+            hit.collider.GetComponent<AI>().health -= 10;
+        }
+
         nextFire = Time.time + fireRate;
     }
 
