@@ -9,11 +9,13 @@ public class gun : MonoBehaviour
     [SerializeField] private float fireRate;
     [SerializeField] private float bulletForce;
     [SerializeField] private Camera shootCam;
+    [SerializeField] private TrailRenderer bulletTrail;
+    [SerializeField] private GameObject impact;
 
 
 
     private float nextFire = 0f;
-    void Update()
+    void FixedUpdate()
     {
         if(Input.GetAxisRaw("Fire1") != 0 && Time.time > nextFire)
         {
@@ -38,8 +40,29 @@ public class gun : MonoBehaviour
 
         Debug.DrawLine(ray.origin, hit.point, Color.red);
 
+        TrailRenderer trail = Instantiate(bulletTrail, firePoint.position, Quaternion.identity);
 
+        StartCoroutine(SpawnTrail(trail, hit));
 
         nextFire = Time.time + fireRate;
+    }
+
+    private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)
+    {
+        float time = 0;
+        Vector3 startPosition = firePoint.transform.position;
+
+        while(time <1)
+        {
+            trail.transform.position = Vector3.Lerp(startPosition, hit.point, time);
+            time += Time.deltaTime / trail.time;
+
+            yield return 0;
+        }
+
+        trail.transform.position = hit.point;
+        Instantiate(impact, hit.point, Quaternion.LookRotation(hit.normal));
+
+        Destroy(trail.gameObject, trail.time);
     }
 }

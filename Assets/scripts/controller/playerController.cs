@@ -6,20 +6,24 @@ using UnityEngine.XR;
 
 public class playerController : MonoBehaviour
 {
-    public Vector3 leftInput;
-    public Vector3 rightInput;
-    [SerializeField] private Rigidbody playerRb;
+    [SerializeField] private bool isUsingKeyboard;
+    [SerializeField] public float deadzone;
     [SerializeField] private float movSpeed;
     [SerializeField] private float rotSpeed;
+
+    [Header("")]
+    public Vector3 leftInput;
+    public Vector3 rightInput;
+
+    [Header("")]
+    [SerializeField] private Rigidbody playerRb;
     [SerializeField] private GameObject model;
-    [SerializeField] public float deadzone;
     [SerializeField] public Transform firePoint;
 
-    [SerializeField] private bool isUsingKeyboard;
+
     [SerializeField] private Camera rayCam;
     [SerializeField] private Transform rayCamPivot;
     
-    [SerializeField] private GameObject debugCube;
 
 
 

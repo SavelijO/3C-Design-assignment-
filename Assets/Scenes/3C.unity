@@ -821,7 +821,7 @@ GameObject:
   - component: {fileID: 633058034}
   m_Layer: 0
   m_Name: player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -853,7 +853,7 @@ Transform:
   m_Children:
   - {fileID: 69067401}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &633058033
 MonoBehaviour:
@@ -867,18 +867,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23ec0eb3344ff00458dca106393ed469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUsingKeyboard: 1
+  deadzone: 0.25
+  movSpeed: 8
+  rotSpeed: 3
   leftInput: {x: 0, y: 0, z: 0}
   rightInput: {x: 0, y: 0, z: 0}
   playerRb: {fileID: 633058034}
-  movSpeed: 8
-  rotSpeed: 3
   model: {fileID: 2128164554}
-  deadzone: 0.25
   firePoint: {fileID: 1637393559}
-  isUsingKeyboard: 0
   rayCam: {fileID: 581789920}
   rayCamPivot: {fileID: 814000625}
-  debugCube: {fileID: 8541309461982528758, guid: fc4cf8642730bec4dbdd21331cc81964, type: 3}
 --- !u!54 &633058034
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -988,7 +987,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 129.4, y: -198.1, z: 0}
 --- !u!114 &705507996
 MonoBehaviour:
@@ -1057,9 +1056,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObj: {fileID: 633058028}
   accTime: 0.05
-  decTime: 0.05
   camOffsetObj: {fileID: 69067400}
-  maxCameraOffset: 0.8
+  maxCameraOffset: 0.9
   decDelay: 1
 --- !u!1 &814000624
 GameObject:
@@ -1091,7 +1089,7 @@ Transform:
   m_Children:
   - {fileID: 581789923}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 35.264, y: 45, z: 0}
 --- !u!1 &817926137
 GameObject:
@@ -2003,7 +2001,7 @@ Transform:
   - {fileID: 1221894924}
   - {fileID: 543450653134575470}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &543450653134575470
 Transform:
@@ -2105,6 +2103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 1637393559}
   bulletPrefab: {fileID: 3044913093031780598, guid: b9b3baa400beeaa43ad8367aea6bbeb0, type: 3}
-  fireRate: 0.1
+  fireRate: 0.12
   bulletForce: 30
   shootCam: {fileID: 212261811}
+  bulletTrail: {fileID: 801577271507909882, guid: c8fdba36578aba5479b0416530317955, type: 3}
+  impact: {fileID: 9203455347926585830, guid: 49a2c3a9d898eff47996a357db73cec7, type: 3}
