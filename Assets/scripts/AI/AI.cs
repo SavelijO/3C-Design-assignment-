@@ -42,16 +42,13 @@ public class AI : MonoBehaviour
         {
             DestroyYourself();
         }
-
-        AttackCooldown();
         
         CheckIfPlayerInRange();
-
         
         if (playerInRange && !attacked)
         {
             Attack();
-            attacked = true;
+            StartCoroutine(AttackCoolDown());
         }   
     }
 
@@ -86,18 +83,12 @@ public class AI : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
-    private void AttackCooldown()
-    {
-        if (attacked && cooldown > 0)
-        {
-            cooldown -= Time.deltaTime;
-        }
-        else if(attacked && cooldown <= 0)
-        {
-            cooldown = 3;
-            attacked = false;
-        }
-    }
     
+    private IEnumerator AttackCoolDown()
+    {
+        attacked = true;
+        yield return new WaitForSeconds(cooldown);
+        attacked = false;
+    }
+
 }
