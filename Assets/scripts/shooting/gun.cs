@@ -45,7 +45,7 @@ public class gun : MonoBehaviour
 
         if(hit.collider.tag == "Enemy")
         {
-            //hit.collider.GetComponent<AI>().health -= 10;
+            hit.collider.GetComponent<AI>().health -= 10;
         }
 
         nextFire = Time.time + fireRate;

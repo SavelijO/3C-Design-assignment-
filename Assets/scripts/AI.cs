@@ -20,7 +20,7 @@ public class AI : MonoBehaviour
     [SerializeField] private float sphereRangeRadius = 3;
     
     //Health system variables
-    [SerializeField] private int health = 100;
+    [SerializeField] public int health = 100;
     
     //Attack variables
     [SerializeField] private int damage = 20;
@@ -32,6 +32,7 @@ public class AI : MonoBehaviour
     {
         whatIsPlayer = LayerMask.GetMask("Player");
         myAgent = this.GetComponent<NavMeshAgent>();
+        player = GameObject.Find("player");
     }
 
     // Update is called once per frame
@@ -44,8 +45,6 @@ public class AI : MonoBehaviour
 
         AttackCooldown();
         
-        AIMovement();
-        
         CheckIfPlayerInRange();
 
         
@@ -54,6 +53,11 @@ public class AI : MonoBehaviour
             Attack();
             attacked = true;
         }   
+    }
+
+    private void FixedUpdate()
+    {
+        AIMovement();
     }
 
     private void AIMovement()
@@ -80,7 +84,7 @@ public class AI : MonoBehaviour
 
     private void DestroyYourself()
     {
-        DestroyImmediate(this);
+        Destroy(gameObject);
     }
 
     private void AttackCooldown()
