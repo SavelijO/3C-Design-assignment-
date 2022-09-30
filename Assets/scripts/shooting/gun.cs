@@ -5,7 +5,6 @@ using UnityEngine;
 public class gun : MonoBehaviour
 {
     [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float fireRate;
     [SerializeField] private float bulletForce;
     [SerializeField] private Camera shootCam;
@@ -44,9 +43,9 @@ public class gun : MonoBehaviour
 
         StartCoroutine(SpawnTrail(trail, hit));
 
-        if(hit.collider.GetComponent<GameObject>().tag == "Enemy")
+        if(hit.collider.tag == "Enemy")
         {
-            hit.collider.GetComponent<AI>().health -= 10;
+            //hit.collider.GetComponent<AI>().health -= 10;
         }
 
         nextFire = Time.time + fireRate;
@@ -62,7 +61,7 @@ public class gun : MonoBehaviour
             trail.transform.position = Vector3.Lerp(startPosition, hit.point, time);
             time += Time.deltaTime / trail.time;
 
-            yield return 0;
+            yield return null;
         }
 
         trail.transform.position = hit.point;
