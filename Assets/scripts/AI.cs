@@ -3,18 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Transactions;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AI : MonoBehaviour
 {
     //General variables
     [SerializeField] private GameObject player;
-    
-    //Movement variables
-    [SerializeField] private float speed = 3f;
-    [SerializeField] private float acceleration = 10;
-    private Rigidbody aiRigidbody;
-    private Vector3 destination;
 
+    //Movement variables
+    private NavMeshAgent myAgent;
+    
     //Player in range variables
     private RaycastHit raycastHit;
     private bool playerInRange;
@@ -32,8 +30,8 @@ public class AI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        aiRigidbody = this.GetComponent<Rigidbody>();
         whatIsPlayer = LayerMask.GetMask("Player");
+        myAgent = this.GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -51,27 +49,16 @@ public class AI : MonoBehaviour
         CheckIfPlayerInRange();
 
         
-        if (playerInRange && Input.GetKeyDown(KeyCode.G))
+        if (playerInRange && !attacked)
         {
             Attack();
             attacked = true;
-        }
-
-        Debug.LogError(cooldown);
-        
+        }   
     }
 
     private void AIMovement()
     {
-        destination = player.transform.position;
-        transform.LookAt(destination);
-        transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
-
-        //If you haven't reached half of the top speed, accelerate
-        if (aiRigidbody.velocity.sqrMagnitude < speed/2)
-        {
-            aiRigidbody.AddForce(acceleration * this.transform.forward, ForceMode.Acceleration);
-        }
+        myAgent.SetDestination(player.transform.position);
     }
 
     private void CheckIfPlayerInRange()
@@ -102,9 +89,9 @@ public class AI : MonoBehaviour
         {
             cooldown -= Time.deltaTime;
         }
-        else if(cooldown <= 0 && attacked)
+        else if(attacked && cooldown <= 0)
         {
-            cooldown = 0;
+            cooldown = 3;
             attacked = false;
         }
     }
