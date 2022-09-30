@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Transactions;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class AI : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class AI : MonoBehaviour
 
     //Movement variables
     private NavMeshAgent myAgent;
+    [SerializeField] private float speedRangeTop = 6;
+    [SerializeField] private float speedRangeBottom = 15;
+
     
     //Player in range variables
     private RaycastHit raycastHit;
@@ -33,6 +37,7 @@ public class AI : MonoBehaviour
         whatIsPlayer = LayerMask.GetMask("Player");
         myAgent = this.GetComponent<NavMeshAgent>();
         player = GameObject.Find("player");
+        myAgent.speed = Random.Range(speedRangeBottom, speedRangeTop);
     }
 
     // Update is called once per frame
