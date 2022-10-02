@@ -44,6 +44,7 @@ public class playerController : MonoBehaviour
 
     private bool isMoving = false;
     private bool isDashing = false;
+    private bool isCollidingWithScenery = false;
     private float time;
 
 
@@ -134,7 +135,7 @@ public class playerController : MonoBehaviour
     
     void CheckDash()
     {
-        if (currentDashCooldown < time && isMoving && Input.GetButtonDown("Dash"))
+        if (currentDashCooldown < time && isMoving && Input.GetButtonDown("Dash") && !isCollidingWithScenery)
         {
             isDashing = true;
             currentDashTime = dashTime + time;
@@ -153,12 +154,12 @@ public class playerController : MonoBehaviour
 
     void Dash()
     {
-
         playerRb.MovePosition(transform.position + transform.forward * movSpeed * dashMultiplier * Time.fixedDeltaTime);
     }
     
 
- 
+
+
 
     void RotateModel()
     {
@@ -185,5 +186,13 @@ public class playerController : MonoBehaviour
         model.transform.position = playerRb.position;
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Scenery")) { isCollidingWithScenery = true; }
+    }
 
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Scenery")) { isCollidingWithScenery = false; }
+    }
 }
