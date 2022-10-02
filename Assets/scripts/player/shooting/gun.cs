@@ -14,7 +14,8 @@ public class gun : MonoBehaviour
     [SerializeField] private float postShotSpread;
     [SerializeField] private int damage;
     [Header("")]
-    [SerializeField] private TrailRenderer bulletTrail;
+    [SerializeField] private TrailRenderer smokeTrailPrefab;
+    [SerializeField] private TrailRenderer hotTrailPrefab;
     [SerializeField] private GameObject impact;
     [SerializeField] private Transform firePoint;
 
@@ -80,8 +81,10 @@ public class gun : MonoBehaviour
             targetPoint = ray.GetPoint(maxShootingDistance);
         }
 
-        TrailRenderer trail = Instantiate(bulletTrail, firePoint.position, Quaternion.identity);
-        StartCoroutine(SpawnTrail(ray, hit, trail, targetPoint));
+        TrailRenderer smokeTrail = Instantiate(smokeTrailPrefab, firePoint.position, Quaternion.identity);
+        StartCoroutine(SpawnTrail(ray, hit, smokeTrail, ray.GetPoint(maxShootingDistance)));
+
+        SpawnImpact(hit, targetPoint);
 
         DoDamage(hit);
     }
@@ -110,10 +113,12 @@ public class gun : MonoBehaviour
             yield return null;
         }
 
-        trail.transform.position = targetPoint;
+        Destroy(trail.gameObject, trail.time);
+    }
+
+    private void SpawnImpact(RaycastHit hit, Vector3 targetPoint)
+    {
         if (hit.normal != Vector3.zero) { Instantiate(impact, targetPoint, Quaternion.LookRotation(hit.normal)); }
         else { Instantiate(impact, targetPoint, Quaternion.identity); }
-
-        Destroy(trail.gameObject, trail.time);
     }
 }

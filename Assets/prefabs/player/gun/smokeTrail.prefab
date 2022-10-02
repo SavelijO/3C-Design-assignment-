@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1692297539323216632}
   - component: {fileID: 801577271507909882}
   m_Layer: 0
-  m_Name: trail
+  m_Name: smokeTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,8 +82,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.0010948181
-        value: 0.115869135
+        time: 0
+        value: 0.10447693
         inSlope: 0
         outSlope: 0
         tangentMode: 0

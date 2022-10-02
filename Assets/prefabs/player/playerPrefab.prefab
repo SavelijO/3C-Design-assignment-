@@ -1331,12 +1331,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireRate: 0.45
-  arc: 15
-  maxShootingDistance: 10
-  bulletCount: 5
+  arc: 40
+  maxShootingDistance: 40
+  bulletCount: 7
   intialSpread: 0.15
   postShotSpread: 0.03
   damage: 20
-  bulletTrail: {fileID: 801577271507909882, guid: c8fdba36578aba5479b0416530317955, type: 3}
+  smokeTrailPrefab: {fileID: 801577271507909882, guid: c8fdba36578aba5479b0416530317955, type: 3}
+  hotTrailPrefab: {fileID: 801577271507909882, guid: 029d9199e491f7c47bed645d9eec38ac, type: 3}
   impact: {fileID: 9203455347926585830, guid: 49a2c3a9d898eff47996a357db73cec7, type: 3}
   firePoint: {fileID: 5993895449162282548}
