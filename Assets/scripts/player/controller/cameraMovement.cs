@@ -6,12 +6,13 @@ using UnityEngine.Rendering;
 
 public class cameraMovement : MonoBehaviour
 {
-    [SerializeField] private GameObject playerObj;
     [SerializeField] private float accTime;
-    [SerializeField] private GameObject camOffsetObj;
     [SerializeField] private float maxCameraOffset;
-    [SerializeField] private float decDelay;
 
+
+    [Header("")]
+    [SerializeField] private GameObject playerObj;
+    [SerializeField] private GameObject camOffsetObj;
     private playerController controller;
 
 
