@@ -90,6 +90,8 @@ public class playerController : MonoBehaviour
     {
         Vector2 keyboardInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         leftInput = new Vector3(keyboardInput.x, 0, keyboardInput.y);
+        if (leftInput == Vector3.zero) { isMoving = false; }
+        else { isMoving = true; }
 
         rayCamPivot.position = new Vector3(0,this.transform.position.y, 0);
         Ray ray = this.rayCam.ScreenPointToRay(Input.mousePosition);
