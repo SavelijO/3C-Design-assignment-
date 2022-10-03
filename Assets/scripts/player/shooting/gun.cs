@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class gun : MonoBehaviour
@@ -8,14 +6,16 @@ public class gun : MonoBehaviour
     [Header("Gun Properties")]
     [SerializeField] private float fireRate;
     [SerializeField] private int arc;
-    [SerializeField] private int maxShootingDistance;
+    [SerializeField] private float maxShootingDistance;
     [SerializeField] private int bulletCount;
+    [SerializeField] private float bulletSpeed;
     [SerializeField] private float intialSpread;
     [SerializeField] private float postShotSpread;
     [SerializeField] private int damage;
+    [SerializeField] private float trailFadeTime;
+
     [Header("")]
-    [SerializeField] private TrailRenderer smokeTrailPrefab;
-    [SerializeField] private TrailRenderer hotTrailPrefab;
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject impact;
     [SerializeField] private Transform firePoint;
 
@@ -51,7 +51,7 @@ public class gun : MonoBehaviour
     {
         correctedForward = (firePoint.forward * Mathf.Cos(-arc / 2 * Mathf.Deg2Rad) + firePoint.right * Mathf.Sin(-arc / 2 * Mathf.Deg2Rad)).normalized;
         correctedRight = Quaternion.AngleAxis(90, Vector3.up) * correctedForward;
-        rayAngleStep = arc / (bulletCount - 1);
+        if (bulletCount > 1) { rayAngleStep = arc / (bulletCount - 1); }
     }
     
     Vector3 CorrectedDir(int index)
@@ -70,50 +70,28 @@ public class gun : MonoBehaviour
         Ray ray = new Ray(firePoint.position + new Vector3(Random.Range(-intialSpread, intialSpread), 0, Random.Range(-intialSpread, intialSpread)), CorrectedDir(index));
         RaycastHit hit;
 
-        Vector3 targetPoint;
+        Physics.Raycast(ray, out hit, maxShootingDistance);
 
-        if (Physics.Raycast(ray, out hit, maxShootingDistance))
-        {
-            targetPoint = hit.point;
-        }
-        else
-        {
-            targetPoint = ray.GetPoint(maxShootingDistance);
-        }
-
-        TrailRenderer smokeTrail = Instantiate(smokeTrailPrefab, firePoint.position, Quaternion.identity);
-        StartCoroutine(SpawnTrail(ray, hit, smokeTrail, ray.GetPoint(maxShootingDistance)));
-
-        SpawnImpact(hit, targetPoint);
-
-        DoDamage(hit);
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        bullet.GetComponent<bullet>().fadeTime = trailFadeTime;
+        StartCoroutine(SpawnBullet(ray, hit, bullet, ray.GetPoint(maxShootingDistance)));
     }
 
-    void DoDamage(RaycastHit hit)
-    {
-        if (hit.collider != null)
-        {
-            if (hit.collider.CompareTag("Enemy"))
-            {
-                hit.collider.GetComponent<AI>().health -= damage;
-            }
-        }
-    }
-
-    private IEnumerator SpawnTrail(Ray ray, RaycastHit hit, TrailRenderer trail, Vector3 targetPoint)
+    private IEnumerator SpawnBullet(Ray ray, RaycastHit hit, GameObject bullet, Vector3 targetPoint)
     {
         float time = 0;
         Vector3 startPosition = ray.origin;
 
         while(time < 1)
         {
-            trail.transform.position = Vector3.Lerp(startPosition, targetPoint, time);
-            time += Time.deltaTime / trail.time;
+            bullet.transform.position = Vector3.Lerp(startPosition, targetPoint, time);
+            float timeScale = maxShootingDistance / bulletSpeed;
+            time = Time.deltaTime / timeScale + time;
 
             yield return null;
         }
 
-        Destroy(trail.gameObject, trail.time);
+        if (bullet.GetComponent<bullet>() != null) { bullet.GetComponent<bullet>().StartCoroutine(bullet.GetComponent<bullet>().Despawn()); }
     }
 
     private void SpawnImpact(RaycastHit hit, Vector3 targetPoint)

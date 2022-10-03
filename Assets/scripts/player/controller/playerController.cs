@@ -29,7 +29,10 @@ public class playerController : MonoBehaviour
     [Header("")]
     [Header("RigidBody")]
     [SerializeField] private Rigidbody playerRb;
-    [SerializeField] private float movSpeed;
+    [SerializeField] private float maxMovSpeed;
+    [SerializeField] private float acceleration;
+    [SerializeField] private float desceleration;
+    private float movSpeed;
 
     [Header("")]
     [Header("Model")]
@@ -64,8 +67,9 @@ public class playerController : MonoBehaviour
         time = Time.time;
         if (isUsingKeyboard) { GetKeyboardInput(); }
         else { GetControllerInput();}
-        
-        
+        GetMovSpeed();
+
+
         CheckDash();
         RotateModel();
         MoveModel();
@@ -131,9 +135,22 @@ public class playerController : MonoBehaviour
 
     void UpdateRigidBodyMovement()
     {
-        playerRb.MovePosition(transform.forward * leftInput.magnitude * movSpeed * Time.fixedDeltaTime + playerRb.position);
+        playerRb.MovePosition(transform.forward * movSpeed * Time.fixedDeltaTime + playerRb.position);
     }
 
+
+    void GetMovSpeed()
+    {
+
+        if(leftInput !=  Vector3.zero)
+        {
+            movSpeed = Mathf.Lerp(movSpeed, maxMovSpeed, Time.deltaTime * acceleration) * Mathf.Clamp(leftInput.magnitude,0,1);
+        }
+        else
+        {
+            movSpeed = Mathf.Lerp(movSpeed, 0, Time.deltaTime * desceleration);
+        }
+    }
     
     void CheckDash()
     {
@@ -156,7 +173,7 @@ public class playerController : MonoBehaviour
 
     void Dash()
     {
-        playerRb.MovePosition(transform.position + transform.forward * movSpeed * dashMultiplier * Time.fixedDeltaTime);
+        playerRb.MovePosition(transform.position + transform.forward * maxMovSpeed * dashMultiplier * Time.fixedDeltaTime);
     }
     
 
