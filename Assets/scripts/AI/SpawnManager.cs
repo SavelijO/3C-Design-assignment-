@@ -36,6 +36,7 @@ public class SpawnManager : MonoBehaviour
         {
             SpawnEnemy(spawnPosition);
             enemiesSpawned++;
+            StartCoroutine(SpawnCooldown());
         }
     }
 

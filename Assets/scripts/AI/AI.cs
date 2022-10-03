@@ -9,13 +9,12 @@ using Random = UnityEngine.Random;
 public class AI : MonoBehaviour
 {
     //General variables
-    [SerializeField] private GameObject player;
+    private GameObject player;
 
     //Movement variables
     private NavMeshAgent myAgent;
-    [SerializeField] private float speedRangeTop = 6;
-    [SerializeField] private float speedRangeBottom = 15;
-
+    [SerializeField] private float speedRangeTop = 15;
+    [SerializeField] private float speedRangeBottom = 6;
     
     //Player in range variables
     private RaycastHit raycastHit;
