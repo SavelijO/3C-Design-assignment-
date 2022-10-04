@@ -185,7 +185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1642877257283836776, guid: 8a9a2684b68a0a3448c6cafe0c88daf9, type: 3}
       propertyPath: enemiesToSpawn
-      value: 2
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1642877257283836776, guid: 8a9a2684b68a0a3448c6cafe0c88daf9, type: 3}
       propertyPath: enemies.Array.size
@@ -398,6 +398,10 @@ PrefabInstance:
     - target: {fileID: 5993895448234906831, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7137073801845017199, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
+      propertyPath: bulletSpeed
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 645236af00e33174896d308fd6f0ce33, type: 3}

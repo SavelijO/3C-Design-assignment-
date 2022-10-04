@@ -27,11 +27,15 @@ public class AI : MonoBehaviour
     
     //Health system variables
     [SerializeField] public int health = 100;
+    [SerializeField] private float recoil = 2;
     
     //Attack variables
     [SerializeField] private int damage = 20;
     [SerializeField] private float cooldown = 3;
     private bool attacked;
+    
+    //Color variables
+    [SerializeField] private Gradient gradient;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +46,10 @@ public class AI : MonoBehaviour
         myAgent.speed = Random.Range(speedRangeBottom, speedRangeTop);
         myRigidbody = this.GetComponent<Rigidbody>();
         newPath = new NavMeshPath();
-        ReduceColor();
+        //Create color keys for gradient
+        CreateGradient();
+        ChangeColor();
+
     }
 
     // Update is called once per frame
@@ -70,30 +77,8 @@ public class AI : MonoBehaviour
 
     private void AIMovement()
     {
-        //Don't move agent with NavMesh
-        /*
-        myAgent.updatePosition = false;
-        myAgent.updateRotation = false;
-
-        if (myAgent.CalculatePath(player.transform.position, newPath))
-        {
-            //myRigidbody.MovePosition(newPath.corners[0] * (myAgent.speed * Time.fixedDeltaTime));
-
-            for (int i = 0; i < newPath.corners.Length - 1; i++)
-            {
-                myAgent.nextPosition = newPath.corners[i];
-                myRigidbody.MovePosition(newPath.corners[i] * (speedRangeBottom * Time.fixedDeltaTime) + myRigidbody.position);
-                //transform.position = Vector3.MoveTowards(transform.position, newPath.corners[i], speedRangeBottom * Time.fixedDeltaTime);
-            }
-        }
-        
-        for (int i = 0; i < newPath.corners.Length - 1; i++)
-            Debug.DrawLine(newPath.corners[i], newPath.corners[i + 1], Color.red);
-        */
-
         myAgent.SetDestination(player.transform.position);
         this.transform.LookAt(player.transform.position);
-
     }
 
     private void CheckIfPlayerInRange()
@@ -101,7 +86,7 @@ public class AI : MonoBehaviour
         playerInRange = Physics.CheckSphere(transform.position, sphereRangeRadius, whatIsPlayer);
     }
 
-    //Debug the SphereCast
+    //Debug the SphereCast used to check if the player is in range
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -118,11 +103,6 @@ public class AI : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void ChangeColourBasedOnHealth()
-    {
-        //Change colour of AI based on damage
-    }
-    
     private IEnumerator AttackCoolDown()
     {
         attacked = true;
@@ -130,14 +110,10 @@ public class AI : MonoBehaviour
         attacked = false;
     }
 
-    private void ReduceColor()
-    {
-        //this.gameObject.GetComponent<Renderer>().material.color = Color.red;
-    }
-
     private void ReduceHealth(int bulletDamage)
     {
-        this.health = -bulletDamage;
+        this.health -= bulletDamage;
+        ChangeColor();
     }
     
     private void OnTriggerEnter(Collider collision)
@@ -145,7 +121,43 @@ public class AI : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet"))
         {
             Destroy(collision.gameObject);
-            ReduceHealth(20);
+            ReduceHealth(10);
         }
+
+        myAgent.enabled = false;
+        myRigidbody.AddForceAtPosition(collision.transform.forward * recoil, collision.transform.position, ForceMode.Impulse);
+        myAgent.enabled = true;
+
+    }
+
+    //Change AI color based on its health
+    private void ChangeColor()
+    {
+        this.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", gradient.Evaluate(health/100f));
+    }
+
+    private void CreateGradient()
+    {
+        //Set the gradient mode
+        gradient.mode = GradientMode.Blend;
+
+        //Create the arrays for the gradient
+        GradientColorKey[] myGradientColorKeys = new GradientColorKey[2];
+        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[2];
+        
+        //Set the colors to blend and where to blend
+        myGradientColorKeys[0].color = Color.grey;
+        myGradientColorKeys[1].color = Color.cyan;
+        myGradientColorKeys[0].time = 0f;
+        myGradientColorKeys[1].time = 1f;
+
+        //Set the alpha to blend
+        alphaKeys[0].alpha = 1.0f;
+        alphaKeys[0].time = 0.0f;
+        alphaKeys[1].alpha = 1.0f;
+        alphaKeys[1].time = 1.0f;
+
+        //Set the keys and alpha arrays to be the ones for the gradient
+        gradient.SetKeys(myGradientColorKeys, alphaKeys);
     }
 }
