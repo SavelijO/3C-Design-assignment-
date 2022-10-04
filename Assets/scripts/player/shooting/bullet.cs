@@ -19,9 +19,9 @@ public class bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Dummy"))
+        if (other.gameObject.CompareTag("AI"))
         {
-            other.GetComponent<dummy>().ReduceHealth(CalculateProximityDamage());
+            other.GetComponent<AI>().ReduceHealth(CalculateProximityDamage());
         }
 
         if (!other.gameObject.CompareTag("Bullet"))

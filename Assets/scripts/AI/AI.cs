@@ -44,7 +44,7 @@ public class AI : MonoBehaviour
         myAgent = this.GetComponent<NavMeshAgent>();
         player = GameObject.Find("player");
         myAgent.speed = Random.Range(speedRangeBottom, speedRangeTop);
-        myRigidbody = this.GetComponent<Rigidbody>();
+        //myRigidbody = this.GetComponent<Rigidbody>();
         
         //Create color keys for gradient
         gradient = new Gradient();
@@ -131,7 +131,7 @@ public class AI : MonoBehaviour
 
         //Disable Agent so Rigidbody can be used to apply the recoil and then reactivate it
         myAgent.enabled = false;
-        myRigidbody.AddForceAtPosition(collision.transform.forward * pushback, collision.transform.position, ForceMode.Force);
+        //myRigidbody.AddForceAtPosition(collision.transform.forward * pushback, collision.transform.position, ForceMode.Force);
         StartCoroutine(PushbackCoolDown());
 
     }

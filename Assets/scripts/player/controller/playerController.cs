@@ -70,10 +70,8 @@ public class playerController : MonoBehaviour
         GetMovSpeed();
 
 
-        CheckDash();
+        CheckDash(); 
         RotateModel();
-        MoveModel();
-               
     }
 
 
@@ -83,8 +81,14 @@ public class playerController : MonoBehaviour
         else
         {
             RotateRigidBody();
+            RotateModel();
             UpdateRigidBodyMovement();
         }
+    }
+
+    private void LateUpdate()
+    {
+        RotateModel();
     }
 
 
@@ -123,13 +127,38 @@ public class playerController : MonoBehaviour
         rightInput = rightInput.ToIso();
     }
 
+    void MoveModel()
+    {
+        model.transform.position = playerRb.position;
+    }
+    
+    void RotateModel()
+    {
+
+        if (leftInput != Vector3.zero && rightInput == Vector3.zero)
+        {
+
+            Quaternion isoRot = Quaternion.LookRotation(leftInput.ToIso(), Vector3.up);
+
+            model.transform.rotation = Quaternion.RotateTowards(model.transform.rotation, isoRot, rotSpeed * 360 * Time.fixedDeltaTime);
+        }
+        if (rightInput != Vector3.zero && !isDashing)
+        {
+            Quaternion isoRot = Quaternion.LookRotation(rightInput, Vector3.up);
+
+
+            model.transform.rotation = Quaternion.RotateTowards(model.transform.rotation, isoRot, rotSpeed * 360 * Time.fixedDeltaTime);
+        }
+
+    }
+
+
     void RotateRigidBody()
     {
         if (leftInput != Vector3.zero && !isDashing)
         {
             Quaternion isoRot = Quaternion.LookRotation(leftInput.ToIso(), Vector3.up);
-
-            playerRb.transform.rotation = isoRot;
+            playerRb.MoveRotation(isoRot);
         }
     }
 
@@ -144,7 +173,7 @@ public class playerController : MonoBehaviour
 
         if(leftInput !=  Vector3.zero)
         {
-            movSpeed = Mathf.Lerp(movSpeed, maxMovSpeed, Time.deltaTime * acceleration) * Mathf.Clamp(leftInput.magnitude,0,1);
+            movSpeed = Mathf.Lerp(movSpeed, maxMovSpeed, Time.deltaTime * acceleration);
         }
         else
         {
@@ -175,35 +204,7 @@ public class playerController : MonoBehaviour
     {
         playerRb.MovePosition(transform.position + transform.forward * maxMovSpeed * dashMultiplier * Time.fixedDeltaTime);
     }
-    
-
-
-
-
-    void RotateModel()
-    {
-
-        if (leftInput != Vector3.zero && rightInput == Vector3.zero)
-        {
-
-            Quaternion isoRot = Quaternion.LookRotation(leftInput.ToIso(), Vector3.up);
-
-            model.transform.rotation = Quaternion.RotateTowards(model.transform.rotation, isoRot, rotSpeed * 360 * Time.fixedDeltaTime);
-        }
-        if(rightInput != Vector3.zero && !isDashing)
-        {
-            Quaternion isoRot = Quaternion.LookRotation(rightInput, Vector3.up);
-
-
-            model.transform.rotation = Quaternion.RotateTowards(model.transform.rotation, isoRot, rotSpeed *  360 * Time.fixedDeltaTime);
-        }
-
-    }
-
-    void MoveModel()
-    {
-        model.transform.position = playerRb.position;
-    }
+   
 
     void OnCollisionEnter(Collision collision)
     {

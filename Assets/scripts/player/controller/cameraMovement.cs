@@ -28,12 +28,9 @@ public class cameraMovement : MonoBehaviour
     void Update()
     {
         CalculateCameraOffset();
-    }
-
-    void FixedUpdate()
-    {
         MoveCamera();
     }
+
 
     void CalculateCameraOffset()
     {
@@ -42,7 +39,7 @@ public class cameraMovement : MonoBehaviour
 
     void MoveCamera()
     {
-        this.transform.position = Vector3.SmoothDamp(this.transform.position, camOffsetObj.transform.position, ref smoothDampVelocity, accTime);
+        this.transform.position = Vector3.Lerp(this.transform.position, playerObj.GetComponent<Rigidbody>().position, Time.deltaTime * 10);
     }
 
 

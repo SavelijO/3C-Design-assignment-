@@ -328,6 +328,11 @@ Light:
   m_CorrespondingSourceObject: {fileID: 5993895448013725753, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
   m_PrefabInstance: {fileID: 5993895447578366627}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1672593339 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5993895449162282548, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
+  m_PrefabInstance: {fileID: 5993895447578366627}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5993895447578366627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -400,8 +405,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7137073801845017199, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
+      propertyPath: firePoint
+      value: 
+      objectReference: {fileID: 1672593339}
+    - target: {fileID: 7137073801845017199, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
       propertyPath: bulletSpeed
-      value: 20
+      value: 80
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 645236af00e33174896d308fd6f0ce33, type: 3}

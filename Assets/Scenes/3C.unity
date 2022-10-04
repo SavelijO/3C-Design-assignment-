@@ -379,16 +379,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5993895448019394641, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
-      propertyPath: m_Drag
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5993895448019394641, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
-      propertyPath: m_Mass
-      value: 10000
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5993895448019394642, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
       propertyPath: isUsingKeyboard
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5993895448234906824, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
       propertyPath: m_Name
