@@ -70,7 +70,7 @@ public class playerController : MonoBehaviour
         GetMovSpeed();
 
 
-        CheckDash(); 
+        CheckDash();
         RotateModel();
     }
 
@@ -81,15 +81,11 @@ public class playerController : MonoBehaviour
         else
         {
             RotateRigidBody();
-            RotateModel();
+            MoveModel();
             UpdateRigidBodyMovement();
         }
     }
 
-    private void LateUpdate()
-    {
-        RotateModel();
-    }
 
 
 
@@ -129,7 +125,7 @@ public class playerController : MonoBehaviour
 
     void MoveModel()
     {
-        model.transform.position = playerRb.position;
+        model.GetComponent<Rigidbody>().MovePosition(playerRb.position);
     }
     
     void RotateModel()
