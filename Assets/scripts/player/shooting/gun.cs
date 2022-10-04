@@ -92,6 +92,7 @@ public class gun : MonoBehaviour
             yield return null;
         }
 
+
         bullet.GetComponent<bullet>().StartCoroutine(bullet.GetComponent<bullet>().Despawn());
     }
 

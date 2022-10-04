@@ -11,7 +11,11 @@ public class bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        DestroyProjectile();
+        if(!other.gameObject.CompareTag("Bullet"))
+        {
+            DestroyProjectile();
+            hasCollided = true;
+        }
     }
 
     public void DestroyProjectile()
