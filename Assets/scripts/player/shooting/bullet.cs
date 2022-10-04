@@ -5,15 +5,24 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    [SerializeField] private GameObject bulletObject;
     [SerializeField] private ParticleSystem trailPartSys;
     [SerializeField] public float fadeTime;
+    [SerializeField] public bool hasCollided;
 
+    private void OnTriggerEnter(Collider other)
+    {
+        DestroyProjectile();
+    }
+
+    public void DestroyProjectile()
+    {
+        this.GetComponent<MeshCollider>().enabled = false;
+        this.GetComponent<MeshRenderer>().enabled = false;
+    }
 
     public IEnumerator Despawn()
     {
-
-        Destroy(bulletObject.gameObject);
+        DestroyProjectile();
 
         ParticleSystemRenderer trailRenderer = trailPartSys.GetComponent<ParticleSystemRenderer>();
 

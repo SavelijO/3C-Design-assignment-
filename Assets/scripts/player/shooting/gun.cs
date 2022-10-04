@@ -84,6 +84,7 @@ public class gun : MonoBehaviour
 
         while(time < 1)
         {
+            if(bullet.GetComponent<bullet>().hasCollided) { break; }
             bullet.transform.position = Vector3.Lerp(startPosition, targetPoint, time);
             float timeScale = maxShootingDistance / bulletSpeed;
             time = Time.deltaTime / timeScale + time;
@@ -91,7 +92,7 @@ public class gun : MonoBehaviour
             yield return null;
         }
 
-        if (bullet.GetComponent<bullet>() != null) { bullet.GetComponent<bullet>().StartCoroutine(bullet.GetComponent<bullet>().Despawn()); }
+        bullet.GetComponent<bullet>().StartCoroutine(bullet.GetComponent<bullet>().Despawn());
     }
 
     private void SpawnImpact(RaycastHit hit, Vector3 targetPoint)
