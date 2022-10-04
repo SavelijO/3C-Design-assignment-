@@ -26,8 +26,9 @@ public class AI : MonoBehaviour
     
     //Health system variables
     [SerializeField] public int health = 100;
-    [SerializeField] private float recoil = 2;
-    
+    [SerializeField] private float pushback = 2;
+    [SerializeField] private float recoilCooldown = 1;
+
     //Attack variables
     [SerializeField] private int damage = 20;
     [SerializeField] private float attackCooldown = 3;
@@ -64,9 +65,8 @@ public class AI : MonoBehaviour
         
         if (playerInRange && !attacked)
         {
-            Debug.LogError("Attacked");
             Attack();
-            StartCoroutine(GeneralCoolDown(attacked, attackCooldown));
+            StartCoroutine(AttackCoolDown());
         }
 
     }
@@ -78,8 +78,12 @@ public class AI : MonoBehaviour
 
     private void AIMovement()
     {
-        myAgent.SetDestination(player.transform.position);
-        this.transform.LookAt(player.transform.position);
+        if (myAgent.enabled)
+        {
+            myAgent.SetDestination(player.transform.position);
+            this.transform.LookAt(player.transform.position);
+        }
+        
     }
 
     private void CheckIfPlayerInRange()
@@ -98,17 +102,22 @@ public class AI : MonoBehaviour
     {
         //player.TakeDamage(damage);
     }
-
     private void DestroyYourself()
     {
         Destroy(gameObject);
     }
 
-    private IEnumerator GeneralCoolDown(bool myBool, float cooldownTime)
+    private IEnumerator AttackCoolDown()
     {
-        myBool = true;
-        yield return new WaitForSeconds(cooldownTime);
-        myBool = false;
+        attacked = true;
+        yield return new WaitForSeconds(attackCooldown);
+        attacked = false;
+    }
+    
+    private IEnumerator PushbackCoolDown()
+    {
+        yield return new WaitForSeconds(recoilCooldown);
+        myAgent.enabled = true;
     }
 
     private void ReduceHealth(int bulletDamage)
@@ -124,9 +133,10 @@ public class AI : MonoBehaviour
             ReduceHealth(10);
         }
 
+        //Disable Agent so Rigidbody can be used to apply the recoil and then reactivate it
         myAgent.enabled = false;
-        myRigidbody.AddForceAtPosition(collision.transform.forward * recoil, collision.transform.position, ForceMode.Impulse);
-        myAgent.enabled = true;
+        myRigidbody.AddForceAtPosition(collision.transform.forward * pushback, collision.transform.position, ForceMode.Force);
+        StartCoroutine(PushbackCoolDown());
 
     }
 
