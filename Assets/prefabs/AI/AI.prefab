@@ -118,7 +118,7 @@ MonoBehaviour:
   speedRangeBottom: 6
   sphereRangeRadius: 3
   health: 100
-  recoil: 50
+  pushback: 2
   recoilCooldown: 0.2
   damage: 20
   attackCooldown: 3

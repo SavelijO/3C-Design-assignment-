@@ -6,16 +6,39 @@ using UnityEngine;
 public class bullet : MonoBehaviour
 {
     [SerializeField] private ParticleSystem trailPartSys;
-    [SerializeField] public float fadeTime;
-    [SerializeField] public bool hasCollided;
+    public float fadeTime;
+    public float damageDistanceLimit;
+    public float damage;
+    public bool hasCollided;
+    private Vector3 initPosition;
+
+    void Start()
+    {
+        initPosition = this.transform.position;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!other.gameObject.CompareTag("Bullet"))
+        if (other.gameObject.CompareTag("Dummy"))
+        {
+            other.GetComponent<dummy>().ReduceHealth(CalculateProximityDamage());
+        }
+
+        if (!other.gameObject.CompareTag("Bullet"))
         {
             DestroyProjectile();
             hasCollided = true;
         }
+
+        
+    }
+
+    int CalculateProximityDamage()
+    {
+        float proximityDamage = damage;
+        float distance = (this.transform.position - initPosition).magnitude / damageDistanceLimit;
+        proximityDamage *= Mathf.Lerp(1,0, distance);
+        return (int)proximityDamage;
     }
 
     public void DestroyProjectile()

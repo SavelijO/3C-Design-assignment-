@@ -12,6 +12,7 @@ public class gun : MonoBehaviour
     [SerializeField] private float intialSpread;
     [SerializeField] private float postShotSpread;
     [SerializeField] private int damage;
+    [SerializeField] private int damageDistanceLimit;
     [SerializeField] private float trailFadeTime;
 
     [Header("")]
@@ -74,6 +75,8 @@ public class gun : MonoBehaviour
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         bullet.GetComponent<bullet>().fadeTime = trailFadeTime;
+        bullet.GetComponent<bullet>().damage = damage;
+        bullet.GetComponent<bullet>().damageDistanceLimit = damageDistanceLimit;
         StartCoroutine(SpawnBullet(ray, hit, bullet, ray.GetPoint(maxShootingDistance)));
     }
 

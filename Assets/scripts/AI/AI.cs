@@ -120,7 +120,7 @@ public class AI : MonoBehaviour
         myAgent.enabled = true;
     }
 
-    private void ReduceHealth(int bulletDamage)
+    public void ReduceHealth(int bulletDamage)
     {
         this.health -= bulletDamage;
         ChangeColor();
@@ -128,10 +128,6 @@ public class AI : MonoBehaviour
     
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
-        {
-            ReduceHealth(10);
-        }
 
         //Disable Agent so Rigidbody can be used to apply the recoil and then reactivate it
         myAgent.enabled = false;
