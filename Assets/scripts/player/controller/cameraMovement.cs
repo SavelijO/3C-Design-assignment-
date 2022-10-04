@@ -39,7 +39,7 @@ public class cameraMovement : MonoBehaviour
 
     void MoveCamera()
     {
-        this.transform.position = Vector3.Lerp(this.transform.position, playerObj.GetComponent<Rigidbody>().position, Time.deltaTime * 10);
+        this.transform.position = Vector3.Lerp(this.transform.position, camOffsetObj.transform.position, Time.deltaTime * 10);
     }
 
 
