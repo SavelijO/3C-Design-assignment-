@@ -17,7 +17,6 @@ public class AI : MonoBehaviour
     [SerializeField] private float speedRangeBottom = 6;
     private Transform goal;
     private Rigidbody myRigidbody;
-    private NavMeshPath newPath;
     
     //Player in range variables
     private RaycastHit raycastHit;
@@ -31,11 +30,11 @@ public class AI : MonoBehaviour
     
     //Attack variables
     [SerializeField] private int damage = 20;
-    [SerializeField] private float cooldown = 3;
+    [SerializeField] private float attackCooldown = 3;
     private bool attacked;
     
     //Color variables
-    [SerializeField] private Gradient gradient;
+    private Gradient gradient;
 
     // Start is called before the first frame update
     void Start()
@@ -45,8 +44,9 @@ public class AI : MonoBehaviour
         player = GameObject.Find("player");
         myAgent.speed = Random.Range(speedRangeBottom, speedRangeTop);
         myRigidbody = this.GetComponent<Rigidbody>();
-        newPath = new NavMeshPath();
+        
         //Create color keys for gradient
+        gradient = new Gradient();
         CreateGradient();
         ChangeColor();
 
@@ -64,8 +64,9 @@ public class AI : MonoBehaviour
         
         if (playerInRange && !attacked)
         {
+            Debug.LogError("Attacked");
             Attack();
-            StartCoroutine(AttackCoolDown());
+            StartCoroutine(GeneralCoolDown(attacked, attackCooldown));
         }
 
     }
@@ -103,11 +104,11 @@ public class AI : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private IEnumerator AttackCoolDown()
+    private IEnumerator GeneralCoolDown(bool myBool, float cooldownTime)
     {
-        attacked = true;
-        yield return new WaitForSeconds(cooldown);
-        attacked = false;
+        myBool = true;
+        yield return new WaitForSeconds(cooldownTime);
+        myBool = false;
     }
 
     private void ReduceHealth(int bulletDamage)
@@ -116,16 +117,11 @@ public class AI : MonoBehaviour
         ChangeColor();
     }
     
-    private void OnTriggerEnter(Collider collision)
+    public void CollidedWithBullet(Transform bullet)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
-        {
-            Destroy(collision.gameObject);
-            ReduceHealth(10);
-        }
-
+        
         myAgent.enabled = false;
-        myRigidbody.AddForceAtPosition(collision.transform.forward * recoil, collision.transform.position, ForceMode.Impulse);
+        myRigidbody.AddForceAtPosition(bullet.forward * recoil, bullet.position, ForceMode.Impulse);
         myAgent.enabled = true;
 
     }
