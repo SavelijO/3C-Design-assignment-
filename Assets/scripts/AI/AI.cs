@@ -42,6 +42,7 @@ public class AI : MonoBehaviour
         myAgent.speed = Random.Range(speedRangeBottom, speedRangeTop);
         myRigidbody = this.GetComponent<Rigidbody>();
         newPath = new NavMeshPath();
+        ReduceColor();
     }
 
     // Update is called once per frame
@@ -129,4 +130,22 @@ public class AI : MonoBehaviour
         attacked = false;
     }
 
+    private void ReduceColor()
+    {
+        //this.gameObject.GetComponent<Renderer>().material.color = Color.red;
+    }
+
+    private void ReduceHealth(int bulletDamage)
+    {
+        this.health = -bulletDamage;
+    }
+    
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Destroy(collision.gameObject);
+            ReduceHealth(20);
+        }
+    }
 }
