@@ -117,11 +117,15 @@ public class AI : MonoBehaviour
         ChangeColor();
     }
     
-    public void CollidedWithBullet(Transform bullet)
+    private void OnTriggerEnter(Collider collision)
     {
-        
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            ReduceHealth(10);
+        }
+
         myAgent.enabled = false;
-        myRigidbody.AddForceAtPosition(bullet.forward * recoil, bullet.position, ForceMode.Impulse);
+        myRigidbody.AddForceAtPosition(collision.transform.forward * recoil, collision.transform.position, ForceMode.Impulse);
         myAgent.enabled = true;
 
     }
