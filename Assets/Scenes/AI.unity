@@ -107,7 +107,7 @@ NavMeshSettings:
     serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.1
-    agentHeight: 2
+    agentHeight: 0.1
     agentSlope: 0
     agentClimb: 0
     ledgeDropHeight: 0
@@ -185,7 +185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1642877257283836776, guid: 8a9a2684b68a0a3448c6cafe0c88daf9, type: 3}
       propertyPath: enemiesToSpawn
-      value: 30
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1642877257283836776, guid: 8a9a2684b68a0a3448c6cafe0c88daf9, type: 3}
       propertyPath: enemies.Array.size
@@ -194,7 +194,7 @@ PrefabInstance:
     - target: {fileID: 1642877257283836776, guid: 8a9a2684b68a0a3448c6cafe0c88daf9, type: 3}
       propertyPath: enemies.Array.data[0]
       value: 
-      objectReference: {fileID: 2666022928885241909, guid: 15502d160dec44c45b61c7c12f1cbf76, type: 3}
+      objectReference: {fileID: 5103561869104179449, guid: d829aa95760389d44abb1926d2f8291f, type: 3}
     - target: {fileID: 4865961196067080657, guid: 8a9a2684b68a0a3448c6cafe0c88daf9, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -408,9 +408,5 @@ PrefabInstance:
       propertyPath: firePoint
       value: 
       objectReference: {fileID: 1672593339}
-    - target: {fileID: 7137073801845017199, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
-      propertyPath: bulletSpeed
-      value: 80
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 645236af00e33174896d308fd6f0ce33, type: 3}

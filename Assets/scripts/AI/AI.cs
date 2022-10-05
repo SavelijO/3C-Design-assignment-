@@ -17,6 +17,7 @@ public class AI : MonoBehaviour
     [SerializeField] private float speedRangeBottom = 6;
     private Transform goal;
     private Rigidbody myRigidbody;
+    public bool isMoving;
     
     //Player in range variables
     private RaycastHit raycastHit;
@@ -31,8 +32,10 @@ public class AI : MonoBehaviour
 
     //Attack variables
     [SerializeField] private int damage = 20;
-    [SerializeField] private float attackCooldown = 3;
+    [SerializeField] public float attackCooldown = 3;
     private bool attacked;
+    public bool isAttacking;
+    private float sphereHitRadius = 2;
     
     //Color variables
     private Gradient gradient;
@@ -66,6 +69,7 @@ public class AI : MonoBehaviour
         if (playerInRange && !attacked)
         {
             Attack();
+            isAttacking = true;
             StartCoroutine(AttackCoolDown());
         }
 
@@ -80,8 +84,13 @@ public class AI : MonoBehaviour
     {
         if (myAgent.enabled)
         {
+            isMoving = true;
             myAgent.SetDestination(player.transform.position);
             this.transform.LookAt(player.transform.position);
+        }
+        else
+        {
+            isMoving = false;
         }
         
     }
@@ -96,11 +105,18 @@ public class AI : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, sphereRangeRadius);
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position + transform.forward*2, sphereHitRadius);
     }
 
     private void Attack()
     {
-        //player.TakeDamage(damage);
+        if (Physics.CheckSphere(transform.position + transform.forward * 2, sphereHitRadius, whatIsPlayer))
+        {
+            Debug.LogError("Hitted");
+            //player.TakeDamage(damage);
+        }
     }
     private void DestroyYourself()
     {
@@ -112,6 +128,7 @@ public class AI : MonoBehaviour
         attacked = true;
         yield return new WaitForSeconds(attackCooldown);
         attacked = false;
+        isAttacking = false;
     }
     
     private IEnumerator PushbackCoolDown()
@@ -128,12 +145,11 @@ public class AI : MonoBehaviour
     
     private void OnTriggerEnter(Collider collision)
     {
-
         //Disable Agent so Rigidbody can be used to apply the recoil and then reactivate it
         myAgent.enabled = false;
-        //myRigidbody.AddForceAtPosition(collision.transform.forward * pushback, collision.transform.position, ForceMode.Force);
+        Vector3 vectorPushback = this.transform.position + ((-this.transform.forward) * pushback);
+        Vector3.Lerp(this.transform.position, vectorPushback, recoilCooldown);
         StartCoroutine(PushbackCoolDown());
-
     }
 
     //Change AI color based on its health

@@ -44,7 +44,7 @@ public class SpawnManager : MonoBehaviour
 
     private Vector3 CalculateRandomPosition()
     {
-        return this.transform.position + new Vector3(Random.Range(-rangeOfSpawn, rangeOfSpawn), 1,
+        return this.transform.position + new Vector3(Random.Range(-rangeOfSpawn, rangeOfSpawn), 0,
             Random.Range(-rangeOfSpawn, rangeOfSpawn));
     }
     
