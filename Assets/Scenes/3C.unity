@@ -384,7 +384,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5993895448019394642, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
       propertyPath: isUsingKeyboard
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5993895448234906824, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
       propertyPath: m_Name
@@ -438,5 +438,9 @@ PrefabInstance:
       propertyPath: firePoint
       value: 
       objectReference: {fileID: 2108228433}
+    - target: {fileID: 7137073801845017199, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
+      propertyPath: maxShotCount
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 645236af00e33174896d308fd6f0ce33, type: 3}

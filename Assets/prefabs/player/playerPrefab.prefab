@@ -1352,7 +1352,8 @@ MonoBehaviour:
   fireRate: 0.7
   arc: 40
   maxShootingDistance: 40
-  bulletCount: 7
+  bulletPerShotCount: 7
+  shotCount: 4
   bulletSpeed: 80
   intialSpread: 0.15
   postShotSpread: 0.03
