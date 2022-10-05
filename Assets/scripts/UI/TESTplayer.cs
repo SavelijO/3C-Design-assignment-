@@ -7,8 +7,14 @@ public class TESTplayer : MonoBehaviour
     //health
     public int maxHealth = 100;
     public int currentHealth;
-
+        
     public HealthBar healthBar;
+
+    //damage pop-ups for enemies
+    public GameObject damageText;
+
+     
+
 
     /*/ammo
     private UImanager uiManager;
@@ -39,6 +45,10 @@ public class TESTplayer : MonoBehaviour
         currentHealth -= damage;
 
         healthBar.SetHealth(currentHealth);
+
+        //damage text for enemies
+        DamageIndicator indicator = Instantiate(damageText, transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
+        indicator.SetDamageText(damage);
     }
 
     /*/ammo: in function for shooting
@@ -54,4 +64,6 @@ public class TESTplayer : MonoBehaviour
         uiManager.UpdateAmmo(currentAmmo);
     }*/
 
+
+    
 }
