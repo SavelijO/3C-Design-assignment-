@@ -1354,6 +1354,8 @@ MonoBehaviour:
   maxShootingDistance: 40
   bulletPerShotCount: 7
   maxShotCount: 4
+  firstBulletReloadTime: 0.75
+  additionalBulletReloadBonus: 0.05
   bulletSpeed: 80
   intialSpread: 0.15
   postShotSpread: 0.03
@@ -1363,3 +1365,4 @@ MonoBehaviour:
   bulletPrefab: {fileID: 6992830919214742410, guid: 6e0019c0323fbe24985461f8190445ce, type: 3}
   impact: {fileID: 9203455347926585830, guid: 49a2c3a9d898eff47996a357db73cec7, type: 3}
   firePoint: {fileID: 0}
+  shotCount: 0

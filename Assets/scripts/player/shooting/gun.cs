@@ -9,6 +9,8 @@ public class gun : MonoBehaviour
     [SerializeField] private float maxShootingDistance;
     [SerializeField] private int bulletPerShotCount;
     [SerializeField] private int maxShotCount;
+    [SerializeField] private float firstBulletReloadTime;
+    [SerializeField] private float additionalBulletReloadBonus;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float intialSpread;
     [SerializeField] private float postShotSpread;
@@ -24,7 +26,9 @@ public class gun : MonoBehaviour
     private Vector3 correctedForward;
     private Vector3 correctedRight;
     private float rayAngleStep;
-    private int shotCount;
+    [SerializeField] private int shotCount;
+    private bool stopReloading = false;
+    private bool isReloading;
 
 
     private void Start()
@@ -35,14 +39,24 @@ public class gun : MonoBehaviour
     private float nextFire = 0f;
     void Update()
     {
-        if (Input.GetAxisRaw("Fire1") != 0 && Time.time > nextFire && shotCount != 0)
+        if (Input.GetAxisRaw("Fire1") != 0 && Time.time > nextFire)
         {
-            Fire();
-            StopCoroutine(Reload());
+            if(shotCount == 0 && !isReloading)
+            {
+                stopReloading = false;
+                StartCoroutine(Reload());
+            }
+            else if (shotCount > 0)
+            {
+                Debug.Log(shotCount);
+                Fire();
+                stopReloading = true;
+            }
         }
 
-        if(Input.GetButtonDown("Reload"))
+        if(Input.GetButtonDown("Reload") && !isReloading)
         {
+            stopReloading = false;
             StartCoroutine(Reload());
         }
     }
@@ -119,11 +133,17 @@ public class gun : MonoBehaviour
 
     private IEnumerator Reload()
     {
+        isReloading = true;
+        float currentLoaded = 0f;
         for (int i = shotCount; i < maxShotCount; i++)
         {
-            yield return new WaitForSeconds(0.1f + i*0.05f);
+            currentLoaded++;
+            yield return new WaitForSeconds(firstBulletReloadTime - currentLoaded * additionalBulletReloadBonus);
+            if (stopReloading) { Debug.Log("bonk"); break; }
             shotCount++;
         }
-
+        isReloading = false;
+        currentLoaded = 0;
+        yield return null;
     }
 }

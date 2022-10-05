@@ -442,5 +442,6 @@ PrefabInstance:
       propertyPath: maxShotCount
       value: 4
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2149672179761558632, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 645236af00e33174896d308fd6f0ce33, type: 3}
