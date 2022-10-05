@@ -45,6 +45,8 @@ public class gun : MonoBehaviour
         {
             StartCoroutine(Reload());
         }
+
+        Debug.Log(shotCount);
     }
 
     void Fire()
@@ -119,7 +121,7 @@ public class gun : MonoBehaviour
 
     private IEnumerator Reload()
     {
-        for (int i = shotCount; i <= maxShotCount; i++)
+        for (int i = shotCount; i < maxShotCount; i++)
         {
             yield return new WaitForSeconds(0.1f + i*0.05f);
             shotCount++;
