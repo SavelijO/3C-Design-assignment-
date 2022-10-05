@@ -48,7 +48,6 @@ public class gun : MonoBehaviour
             }
             else if (shotCount > 0)
             {
-                Debug.Log(shotCount);
                 Fire();
                 stopReloading = true;
             }
@@ -139,7 +138,7 @@ public class gun : MonoBehaviour
         {
             currentLoaded++;
             yield return new WaitForSeconds(firstBulletReloadTime - currentLoaded * additionalBulletReloadBonus);
-            if (stopReloading) { Debug.Log("bonk"); break; }
+            if (stopReloading) { break; }
             shotCount++;
         }
         isReloading = false;
