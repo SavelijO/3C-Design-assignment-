@@ -121,8 +121,8 @@ public class gun : MonoBehaviour
     {
         for (int i = shotCount; i <= maxShotCount; i++)
         {
+            yield return new WaitForSeconds(0.1f + i*0.05f);
             shotCount++;
-            yield return new WaitForSeconds(0.07f + i*0.05f);
         }
 
     }

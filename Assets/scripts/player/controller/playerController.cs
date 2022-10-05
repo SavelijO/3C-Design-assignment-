@@ -81,9 +81,9 @@ public class playerController : MonoBehaviour
         else
         {
             RotateRigidBody();
-            MoveModel();
             UpdateRigidBodyMovement();
         }
+        MoveModel();
     }
 
 
@@ -138,7 +138,7 @@ public class playerController : MonoBehaviour
 
             model.transform.rotation = Quaternion.RotateTowards(model.transform.rotation, isoRot, rotSpeed * 360 * Time.fixedDeltaTime);
         }
-        if (rightInput != Vector3.zero && !isDashing)
+        if (rightInput != Vector3.zero)
         {
             Quaternion isoRot = Quaternion.LookRotation(rightInput, Vector3.up);
 
