@@ -17,7 +17,6 @@ public class AI : MonoBehaviour
     [SerializeField] private float speedRangeBottom = 6;
     private Transform goal;
     private Rigidbody myRigidbody;
-    private NavMeshPath newPath;
     
     //Player in range variables
     private RaycastHit raycastHit;
@@ -27,11 +26,16 @@ public class AI : MonoBehaviour
     
     //Health system variables
     [SerializeField] public int health = 100;
-    
+    [SerializeField] private float pushback = 2;
+    [SerializeField] private float recoilCooldown = 1;
+
     //Attack variables
     [SerializeField] private int damage = 20;
-    [SerializeField] private float cooldown = 3;
+    [SerializeField] private float attackCooldown = 3;
     private bool attacked;
+    
+    //Color variables
+    private Gradient gradient;
 
     // Start is called before the first frame update
     void Start()
@@ -40,8 +44,13 @@ public class AI : MonoBehaviour
         myAgent = this.GetComponent<NavMeshAgent>();
         player = GameObject.Find("player");
         myAgent.speed = Random.Range(speedRangeBottom, speedRangeTop);
-        myRigidbody = this.GetComponent<Rigidbody>();
-        newPath = new NavMeshPath();
+        //myRigidbody = this.GetComponent<Rigidbody>();
+        
+        //Create color keys for gradient
+        gradient = new Gradient();
+        CreateGradient();
+        ChangeColor();
+
     }
 
     // Update is called once per frame
@@ -69,30 +78,12 @@ public class AI : MonoBehaviour
 
     private void AIMovement()
     {
-        //Don't move agent with NavMesh
-        /*
-        myAgent.updatePosition = false;
-        myAgent.updateRotation = false;
-
-        if (myAgent.CalculatePath(player.transform.position, newPath))
+        if (myAgent.enabled)
         {
-            //myRigidbody.MovePosition(newPath.corners[0] * (myAgent.speed * Time.fixedDeltaTime));
-
-            for (int i = 0; i < newPath.corners.Length - 1; i++)
-            {
-                myAgent.nextPosition = newPath.corners[i];
-                myRigidbody.MovePosition(newPath.corners[i] * (speedRangeBottom * Time.fixedDeltaTime) + myRigidbody.position);
-                //transform.position = Vector3.MoveTowards(transform.position, newPath.corners[i], speedRangeBottom * Time.fixedDeltaTime);
-            }
+            myAgent.SetDestination(player.transform.position);
+            this.transform.LookAt(player.transform.position);
         }
         
-        for (int i = 0; i < newPath.corners.Length - 1; i++)
-            Debug.DrawLine(newPath.corners[i], newPath.corners[i + 1], Color.red);
-        */
-
-        myAgent.SetDestination(player.transform.position);
-        this.transform.LookAt(player.transform.position);
-
     }
 
     private void CheckIfPlayerInRange()
@@ -100,7 +91,7 @@ public class AI : MonoBehaviour
         playerInRange = Physics.CheckSphere(transform.position, sphereRangeRadius, whatIsPlayer);
     }
 
-    //Debug the SphereCast
+    //Debug the SphereCast used to check if the player is in range
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -111,22 +102,68 @@ public class AI : MonoBehaviour
     {
         //player.TakeDamage(damage);
     }
-
     private void DestroyYourself()
     {
         Destroy(gameObject);
     }
 
-    private void ChangeColourBasedOnHealth()
-    {
-        //Change colour of AI based on damage
-    }
-    
     private IEnumerator AttackCoolDown()
     {
         attacked = true;
-        yield return new WaitForSeconds(cooldown);
+        yield return new WaitForSeconds(attackCooldown);
         attacked = false;
     }
+    
+    private IEnumerator PushbackCoolDown()
+    {
+        yield return new WaitForSeconds(recoilCooldown);
+        myAgent.enabled = true;
+    }
 
+    public void ReduceHealth(int bulletDamage)
+    {
+        this.health -= bulletDamage;
+        ChangeColor();
+    }
+    
+    private void OnTriggerEnter(Collider collision)
+    {
+
+        //Disable Agent so Rigidbody can be used to apply the recoil and then reactivate it
+        myAgent.enabled = false;
+        //myRigidbody.AddForceAtPosition(collision.transform.forward * pushback, collision.transform.position, ForceMode.Force);
+        StartCoroutine(PushbackCoolDown());
+
+    }
+
+    //Change AI color based on its health
+    private void ChangeColor()
+    {
+        this.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", gradient.Evaluate(health/100f));
+    }
+
+    private void CreateGradient()
+    {
+        //Set the gradient mode
+        gradient.mode = GradientMode.Blend;
+
+        //Create the arrays for the gradient
+        GradientColorKey[] myGradientColorKeys = new GradientColorKey[2];
+        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[2];
+        
+        //Set the colors to blend and where to blend
+        myGradientColorKeys[0].color = Color.grey;
+        myGradientColorKeys[1].color = Color.cyan;
+        myGradientColorKeys[0].time = 0f;
+        myGradientColorKeys[1].time = 1f;
+
+        //Set the alpha to blend
+        alphaKeys[0].alpha = 1.0f;
+        alphaKeys[0].time = 0.0f;
+        alphaKeys[1].alpha = 1.0f;
+        alphaKeys[1].time = 1.0f;
+
+        //Set the keys and alpha arrays to be the ones for the gradient
+        gradient.SetKeys(myGradientColorKeys, alphaKeys);
+    }
 }

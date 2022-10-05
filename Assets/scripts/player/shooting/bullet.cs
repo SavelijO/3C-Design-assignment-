@@ -5,15 +5,51 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    [SerializeField] private GameObject bulletObject;
     [SerializeField] private ParticleSystem trailPartSys;
-    [SerializeField] public float fadeTime;
+    public float fadeTime;
+    public float damageDistanceLimit;
+    public float damage;
+    public bool hasCollided;
+    private Vector3 initPosition;
 
+    void Start()
+    {
+        initPosition = this.transform.position;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("AI"))
+        {
+            other.GetComponent<AI>().ReduceHealth(CalculateProximityDamage());
+        }
+
+        if (!other.gameObject.CompareTag("Bullet"))
+        {
+            DestroyProjectile();
+            hasCollided = true;
+        }
+
+        
+    }
+
+    int CalculateProximityDamage()
+    {
+        float proximityDamage = damage;
+        float distance = (this.transform.position - initPosition).magnitude / damageDistanceLimit;
+        proximityDamage *= Mathf.Lerp(1,0, distance);
+        return (int)proximityDamage;
+    }
+
+    public void DestroyProjectile()
+    {
+        this.GetComponent<MeshCollider>().enabled = false;
+        this.GetComponent<MeshRenderer>().enabled = false;
+    }
 
     public IEnumerator Despawn()
     {
-
-        Destroy(bulletObject.gameObject);
+        DestroyProjectile();
 
         ParticleSystemRenderer trailRenderer = trailPartSys.GetComponent<ParticleSystemRenderer>();
 

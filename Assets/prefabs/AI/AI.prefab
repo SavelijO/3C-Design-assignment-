@@ -14,10 +14,9 @@ GameObject:
   - component: {fileID: 1039233193534082971}
   - component: {fileID: -7004530340122004723}
   - component: {fileID: 2010458391391480140}
-  - component: {fileID: 585195158433562773}
   m_Layer: 0
   m_Name: AI
-  m_TagString: Enemy
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,8 +117,10 @@ MonoBehaviour:
   speedRangeBottom: 6
   sphereRangeRadius: 3
   health: 100
+  pushback: 2
+  recoilCooldown: 0.2
   damage: 20
-  cooldown: 3
+  attackCooldown: 3
 --- !u!195 &2010458391391480140
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -142,22 +143,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
---- !u!54 &585195158433562773
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2666022928885241909}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
 --- !u!1 &3697516458300006746
 GameObject:
   m_ObjectHideFlags: 0

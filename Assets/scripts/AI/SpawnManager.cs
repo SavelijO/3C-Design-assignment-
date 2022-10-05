@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -15,7 +17,7 @@ public class SpawnManager : MonoBehaviour
     private Vector3 spawnPosition;
     private bool spawned;
     private bool isOnMap;
-    private bool isNotColliding;
+    private bool isColliding;
     private LayerMask whatIsGround;
     
     // Start is called before the first frame update
@@ -32,7 +34,7 @@ public class SpawnManager : MonoBehaviour
         spawnPosition = CalculateRandomPosition();
         CheckIfOnMap();
 
-        if (enemiesSpawned < enemiesToSpawn && !spawned && isOnMap)
+        if (enemiesSpawned < enemiesToSpawn && !spawned && isOnMap && !isColliding )
         {
             SpawnEnemy(spawnPosition);
             enemiesSpawned++;
@@ -53,8 +55,15 @@ public class SpawnManager : MonoBehaviour
 
     private void CheckIfOnMap()
     {
-        isOnMap = Physics.CheckSphere(spawnPosition, 5f, whatIsGround);
+        isOnMap = Physics.CheckSphere(spawnPosition, 2f, whatIsGround);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        isColliding = (collision.gameObject.CompareTag("Player") && collision.gameObject.layer != whatIsGround);
+    }
+
+    
 
     private IEnumerator SpawnCooldown()
     {

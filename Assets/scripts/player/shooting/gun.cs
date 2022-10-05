@@ -7,11 +7,13 @@ public class gun : MonoBehaviour
     [SerializeField] private float fireRate;
     [SerializeField] private int arc;
     [SerializeField] private float maxShootingDistance;
-    [SerializeField] private int bulletCount;
+    [SerializeField] private int bulletPerShotCount;
+    [SerializeField] private int maxShotCount;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float intialSpread;
     [SerializeField] private float postShotSpread;
     [SerializeField] private int damage;
+    [SerializeField] private int damageDistanceLimit;
     [SerializeField] private float trailFadeTime;
 
     [Header("")]
@@ -22,28 +24,39 @@ public class gun : MonoBehaviour
     private Vector3 correctedForward;
     private Vector3 correctedRight;
     private float rayAngleStep;
+    private int shotCount;
 
 
-
+    private void Start()
+    {
+        shotCount = maxShotCount;
+    }
 
     private float nextFire = 0f;
     void Update()
     {
-        if (Input.GetAxisRaw("Fire1") != 0 && Time.time > nextFire)
+        if (Input.GetAxisRaw("Fire1") != 0 && Time.time > nextFire && shotCount != 0)
         {
             Fire();
+            StopCoroutine(Reload());
+        }
+
+        if(Input.GetButtonDown("Reload"))
+        {
+            StartCoroutine(Reload());
         }
     }
 
     void Fire()
     {
+
         CreateArc();    
         
-        for (int i = 0; i < bulletCount; i++)
+        for (int i = 0; i < bulletPerShotCount; i++)
 		{
             HitScan(i);
         }
-        
+        shotCount--;
         nextFire = Time.time + fireRate;
     }
 
@@ -51,7 +64,7 @@ public class gun : MonoBehaviour
     {
         correctedForward = (firePoint.forward * Mathf.Cos(-arc / 2 * Mathf.Deg2Rad) + firePoint.right * Mathf.Sin(-arc / 2 * Mathf.Deg2Rad)).normalized;
         correctedRight = Quaternion.AngleAxis(90, Vector3.up) * correctedForward;
-        if (bulletCount > 1) { rayAngleStep = arc / (bulletCount - 1); }
+        if (bulletPerShotCount > 1) { rayAngleStep = arc / (bulletPerShotCount - 1); }
     }
     
     Vector3 CorrectedDir(int index)
@@ -74,6 +87,8 @@ public class gun : MonoBehaviour
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         bullet.GetComponent<bullet>().fadeTime = trailFadeTime;
+        bullet.GetComponent<bullet>().damage = damage;
+        bullet.GetComponent<bullet>().damageDistanceLimit = damageDistanceLimit;
         StartCoroutine(SpawnBullet(ray, hit, bullet, ray.GetPoint(maxShootingDistance)));
     }
 
@@ -84,6 +99,7 @@ public class gun : MonoBehaviour
 
         while(time < 1)
         {
+            if(bullet.GetComponent<bullet>().hasCollided) { break; }
             bullet.transform.position = Vector3.Lerp(startPosition, targetPoint, time);
             float timeScale = maxShootingDistance / bulletSpeed;
             time = Time.deltaTime / timeScale + time;
@@ -91,12 +107,23 @@ public class gun : MonoBehaviour
             yield return null;
         }
 
-        if (bullet.GetComponent<bullet>() != null) { bullet.GetComponent<bullet>().StartCoroutine(bullet.GetComponent<bullet>().Despawn()); }
+
+        bullet.GetComponent<bullet>().StartCoroutine(bullet.GetComponent<bullet>().Despawn());
     }
 
     private void SpawnImpact(RaycastHit hit, Vector3 targetPoint)
     {
         if (hit.normal != Vector3.zero) { Instantiate(impact, targetPoint, Quaternion.LookRotation(hit.normal)); }
         else { Instantiate(impact, targetPoint, Quaternion.identity); }
+    }
+
+    private IEnumerator Reload()
+    {
+        for (int i = shotCount; i <= maxShotCount; i++)
+        {
+            shotCount++;
+            yield return new WaitForSeconds(0.07f + i*0.05f);
+        }
+
     }
 }
