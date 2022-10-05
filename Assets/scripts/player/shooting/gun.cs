@@ -45,8 +45,6 @@ public class gun : MonoBehaviour
         {
             StartCoroutine(Reload());
         }
-
-        Debug.Log(shotCount);
     }
 
     void Fire()
