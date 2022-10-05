@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.XR;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using XInputDotNetPure;
 
 public class playerController : MonoBehaviour
 {
@@ -15,7 +13,6 @@ public class playerController : MonoBehaviour
     [Header("")]
     public Vector3 leftInput;
     public Vector3 rightInput;
-
 
     [Header("")]
     [Header("Dash")]
@@ -49,8 +46,6 @@ public class playerController : MonoBehaviour
     private bool isDashing = false;
     private bool isCollidingWithScenery = false;
     private float time;
-
-
 
     void Start()
     {
@@ -198,6 +193,7 @@ public class playerController : MonoBehaviour
 
     void Dash()
     {
+        StartCoroutine(VibrateForSeonds(0.25f));
         playerRb.MovePosition(transform.position + transform.forward * maxMovSpeed * dashMultiplier * Time.fixedDeltaTime);
     }
    
@@ -210,5 +206,12 @@ public class playerController : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Scenery")) { isCollidingWithScenery = false; }
+    }
+
+    IEnumerator VibrateForSeonds(float time)
+    {
+        GamePad.SetVibration(0, 0.2f, 0.7f);
+        yield return new WaitForSeconds(time);
+        GamePad.SetVibration(0, 0f, 0f);
     }
 }

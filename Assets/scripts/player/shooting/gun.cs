@@ -26,7 +26,7 @@ public class gun : MonoBehaviour
     private Vector3 correctedForward;
     private Vector3 correctedRight;
     private float rayAngleStep;
-    [SerializeField] private int shotCount;
+    private int shotCount;
     private bool stopReloading = false;
     private bool isReloading;
 
