@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject[] enemies;
     [SerializeField] private int rangeOfSpawn = 50;
     [SerializeField] private float cooldownSpawn = 1;
-    [SerializeField] private int wave = 1;
+    [SerializeField] public int wave = 1;
     [SerializeField] private float waveEnemiesMultiplier = 2;
     [SerializeField] private float waveTimer = 20;
     [SerializeField] private float waveTimerMultiplier = 1;
@@ -25,6 +25,7 @@ public class SpawnManager : MonoBehaviour
     private bool isColliding;
     private LayerMask whatIsGround;
     private bool waveIsStarted;
+    private int enemiesKilled = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -37,12 +38,14 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
 
-        if (waveTimerCount > 0)
+        Debug.LogError(enemiesKilled + " " + enemiesToSpawnForWave);
+        
+        if (waveTimerCount > 0 || enemiesKilled < enemiesToSpawnForWave)
         {
             waveTimerCount -= Time.deltaTime;
             ContinueWave();
         }
-        else if(enemiesSpawned == enemiesToSpawnForWave || waveTimerCount <= 0)
+        else if(enemiesSpawned == enemiesToSpawnForWave || waveTimerCount <= 0 || enemiesKilled == enemiesToSpawnForWave)
         {
             RestartWave();
             wave++;
@@ -72,6 +75,7 @@ public class SpawnManager : MonoBehaviour
     {
         waveTimerCount = waveTimer + CalculateWaveTimer();
         enemiesSpawned = 0;
+        enemiesKilled = 0;
     }
 
     private Vector3 CalculateRandomPosition()
@@ -110,5 +114,10 @@ public class SpawnManager : MonoBehaviour
         spawned = true;
         yield return new WaitForSeconds(cooldownSpawn);
         spawned = false;
+    }
+
+    public void EnemyDied()
+    {
+        enemiesKilled++;
     }
 }

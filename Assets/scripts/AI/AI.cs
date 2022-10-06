@@ -10,6 +10,7 @@ public class AI : MonoBehaviour
 {
     //General variables
     private GameObject player;
+    private GameObject spawnManager;
 
     //Movement variables
     private NavMeshAgent myAgent;
@@ -55,6 +56,7 @@ public class AI : MonoBehaviour
         whatIsPlayer = LayerMask.GetMask("Player");
         myAgent = this.GetComponent<NavMeshAgent>();
         player = GameObject.Find("player");
+        spawnManager = GameObject.Find("SpawnManager");
         myAgent.speed = Random.Range(speedRangeBottom, speedRangeTop);
         myEnemyDamage = this.GetComponent<EnemyDamage>();
         
@@ -149,6 +151,7 @@ public class AI : MonoBehaviour
     }
     private void DestroyYourself()
     {
+        spawnManager.GetComponent<SpawnManager>().EnemyDied();
         player.GetComponent<playerController>().RestoreDrain();
         Destroy(gameObject);
     }
