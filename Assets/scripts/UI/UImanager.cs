@@ -5,11 +5,19 @@ using UnityEngine.UI;
 
 public class UImanager : MonoBehaviour
 {
-    [SerializeField] private Text ammoText;
 
-    public void UpdateAmmo(int count)
+    [SerializeField] private RawImage[] bullets;
+    [SerializeField] public float bulletCount;
+
+    private void Update()
     {
-        ammoText.text = "Ammo: " + count;
+        for (int i = 0; i < 4; i++)
+        {
+            bullets[i].enabled = false;
+        }
+        for (int i = 0; i < bulletCount; i++)
+        {
+            bullets[i].enabled = true;
+        }
     }
-
 }
