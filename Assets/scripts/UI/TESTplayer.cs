@@ -12,6 +12,7 @@ public class TESTplayer : MonoBehaviour
 
     //damage pop-ups for enemies
     public GameObject damageText;
+    public Vector3 offset;
 
      
 
@@ -29,6 +30,9 @@ public class TESTplayer : MonoBehaviour
         /*/ammo
         uiManager = GameObject.Find("Canvas").GetComponent<UImanager>();
         */
+
+        offset = new Vector3(0, 2, 0);
+           
     }
 
     private void Update()
@@ -47,7 +51,7 @@ public class TESTplayer : MonoBehaviour
         healthBar.SetHealth(currentHealth);
 
         //damage text for enemies
-        DamageIndicator indicator = Instantiate(damageText, transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
+        DamageIndicator indicator = Instantiate(damageText, transform.position + offset, Quaternion.identity).GetComponent<DamageIndicator>();
         indicator.SetDamageText(damage);
     }
 

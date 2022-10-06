@@ -8,6 +8,8 @@ public class HealthBar : MonoBehaviour
     public Slider slider;
     public Gradient gradient;
     public Image fill;
+
+    [SerializeField] private GameObject player;
     
 
     public void SetMaxHealth (int health)

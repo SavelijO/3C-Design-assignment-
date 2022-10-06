@@ -17,7 +17,8 @@ public class DamageIndicator : MonoBehaviour
     private void Start()
     {
         //find and look at camera - so that 2D objects always turn to camera
-        transform.LookAt(2 * transform.position - Camera.main.transform.position);
+        //transform.LookAt(2 * transform.position - Camera.main.transform.position);
+        transform.Rotate(0, 45, 0);
 
         //position of the damage pop-ups numbers
         float direction = Random.rotation.eulerAngles.z;
