@@ -86,8 +86,14 @@ public class AI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
-        AIMovement();
+        if (attacked)
+        {
+            AIMovementAfterAttack();
+        }
+        else
+        {
+            AIMovement();
+        }
         
     }
 
@@ -104,6 +110,21 @@ public class AI : MonoBehaviour
             isMoving = false;
         }
         
+        
+    }
+
+    private void AIMovementAfterAttack()
+    {
+        if (myAgent.enabled)
+        {
+            isMoving = true;
+            myAgent.SetDestination(player.transform.position - this.transform.position + (player.transform.position*0.005f));
+            this.transform.LookAt(player.transform.position);
+        }
+        else
+        {
+            isMoving = false;
+        }
     }
 
     private void CheckIfPlayerInRange()
@@ -124,7 +145,7 @@ public class AI : MonoBehaviour
     private void Attack()
     {
         StartCoroutine(AttackDelay());
-        
+  
     }
     private void DestroyYourself()
     {
@@ -135,9 +156,10 @@ public class AI : MonoBehaviour
     private IEnumerator AttackCoolDown()
     {
         attacked = true;
-        yield return new WaitForSeconds(attackCooldown);
-        attacked = false;
+        yield return new WaitForSeconds(0.9f);
         isAttacking = false;
+        yield return new WaitForSeconds(attackCooldown-0.9f);
+        attacked = false;
     }
     
     private IEnumerator PushbackCoolDown()
@@ -149,11 +171,14 @@ public class AI : MonoBehaviour
     private IEnumerator AttackDelay()
     {
         yield return new WaitForSeconds(attackDelay);
+        myAgent.enabled = false;
         if (Physics.CheckSphere(transform.position + transform.forward * 2, sphereHitRadius, whatIsPlayer) && !hitted)
         {
             Debug.LogError("Hitted");
             player.GetComponent<playerController>().TakeDamage(damage);
         }
+        yield return new WaitForSeconds(0.15f);
+        myAgent.enabled = true;
     }
 
     public void ReduceHealth(int bulletDamage)
