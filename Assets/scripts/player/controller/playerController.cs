@@ -110,7 +110,7 @@ public class playerController : MonoBehaviour
     public void RestoreDrain()
     {
         health = Mathf.Clamp(health+10f, 0f, 100f);
-        healthDrain = Mathf.Clamp(healthDrain - 0.1f, 0f, 1f);
+        healthDrain = Mathf.Clamp(healthDrain - 0.1f, 0f, 0.3f);
     }
     
 
