@@ -239,7 +239,7 @@ public class playerController : MonoBehaviour
 
     IEnumerator VibrateForSeconds(float time)
     {
-        GamePad.SetVibration(0, 0.2f, 0.7f);
+        GamePad.SetVibration(0, 1f, 1f);
         yield return new WaitForSeconds(time);
         GamePad.SetVibration(0, 0f, 0f);
     }
