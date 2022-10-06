@@ -128,6 +128,7 @@ public class AI : MonoBehaviour
     }
     private void DestroyYourself()
     {
+        player.GetComponent<playerController>().RestoreDrain();
         Destroy(gameObject);
     }
 

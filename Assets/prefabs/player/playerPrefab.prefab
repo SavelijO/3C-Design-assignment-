@@ -228,6 +228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23ec0eb3344ff00458dca106393ed469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthDrain: 0
+  drainRate: 0.1
+  health: 100
   isUsingKeyboard: 1
   deadzone: 0.25
   leftInput: {x: 0, y: 0, z: 0}

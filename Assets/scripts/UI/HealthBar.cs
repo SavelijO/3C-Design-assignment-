@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,9 +11,19 @@ public class HealthBar : MonoBehaviour
     public Image fill;
 
     [SerializeField] private GameObject player;
-    
 
-    public void SetMaxHealth (int health)
+
+    private void Start()
+    {
+        SetMaxHealth(player.GetComponent<playerController>().health);
+    }
+
+    private void Update()
+    {
+        SetHealth(player.GetComponent<playerController>().health);
+    }
+
+    public void SetMaxHealth (float health)
     {
         slider.maxValue = health;
         slider.value = health;
@@ -20,7 +31,7 @@ public class HealthBar : MonoBehaviour
         fill.color = gradient.Evaluate(1f);
     }
 
-    public void SetHealth(int health)
+    public void SetHealth(float health)
     {
         slider.value = health;
 

@@ -26,7 +26,7 @@ public class gun : MonoBehaviour
     private Vector3 correctedForward;
     private Vector3 correctedRight;
     private float rayAngleStep;
-    private int shotCount;
+    public int shotCount;
     private bool stopReloading = false;
     private bool isReloading;
 
@@ -140,6 +140,7 @@ public class gun : MonoBehaviour
             yield return new WaitForSeconds(firstBulletReloadTime - currentLoaded * additionalBulletReloadBonus);
             if (stopReloading) { break; }
             shotCount++;
+            nextFire = Time.time + fireRate;
         }
         isReloading = false;
         currentLoaded = 0;

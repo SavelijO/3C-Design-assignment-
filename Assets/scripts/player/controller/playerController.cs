@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,11 @@ using XInputDotNetPure;
 
 public class playerController : MonoBehaviour
 {
-    public int health = 100;
+    [Header("")] 
+    [Header("Controls")] 
+    [SerializeField] private float healthDrain;
+    [SerializeField] private float drainRate;
+    [SerializeField] public float health = 100;
     
     [Header("")]
     [Header("Controls")]
@@ -57,6 +62,7 @@ public class playerController : MonoBehaviour
         {
             Cursor.visible = false;              
         }
+        InvokeRepeating("Drain", 0.5f, drainRate);
     }
 
 
@@ -78,6 +84,7 @@ public class playerController : MonoBehaviour
             GamePad.SetVibration(0, 0f, 0f);
         }
         
+
     }
 
 
@@ -93,7 +100,19 @@ public class playerController : MonoBehaviour
     }
 
 
+   void Drain()
+    {
+        health -= healthDrain;
+        healthDrain += 0.005f;
+        Mathf.Clamp(healthDrain, 0f, 1f);
+    }
 
+    public void RestoreDrain()
+    {
+        health = Mathf.Clamp(health+10f, 0f, 100f);
+        healthDrain = Mathf.Clamp(healthDrain - 0.1f, 0f, 1f);
+    }
+    
 
 
     void GetKeyboardInput()
