@@ -5,6 +5,8 @@ using XInputDotNetPure;
 
 public class playerController : MonoBehaviour
 {
+    public int health = 100;
+    
     [Header("")]
     [Header("Controls")]
     [SerializeField] private bool isUsingKeyboard;
@@ -46,6 +48,8 @@ public class playerController : MonoBehaviour
     private bool isDashing = false;
     private bool isCollidingWithScenery = false;
     private float time;
+    private float nextHit;
+    private float nextHitTime = 0.5f;
 
     void Start()
     {
@@ -67,6 +71,13 @@ public class playerController : MonoBehaviour
 
         CheckDash();
         RotateModel();
+
+        if (health <= 0)
+        {
+            Debug.Log("Dead");
+            GamePad.SetVibration(0, 0f, 0f);
+        }
+        
     }
 
 
@@ -193,7 +204,6 @@ public class playerController : MonoBehaviour
 
     void Dash()
     {
-        StartCoroutine(VibrateForSeonds(0.25f));
         playerRb.MovePosition(transform.position + transform.forward * maxMovSpeed * dashMultiplier * Time.fixedDeltaTime);
     }
    
@@ -208,10 +218,20 @@ public class playerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Scenery")) { isCollidingWithScenery = false; }
     }
 
-    IEnumerator VibrateForSeonds(float time)
+    IEnumerator VibrateForSeconds(float time)
     {
         GamePad.SetVibration(0, 0.2f, 0.7f);
         yield return new WaitForSeconds(time);
         GamePad.SetVibration(0, 0f, 0f);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (nextHit < time)
+        {
+            health -= damage;
+            StartCoroutine(VibrateForSeconds(0.3f)) ;
+            nextHit = time + nextHitTime;
+        }
     }
 }

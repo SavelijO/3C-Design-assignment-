@@ -10,36 +10,68 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private GameObject[] enemies;
     [SerializeField] private int rangeOfSpawn = 50;
-    [SerializeField] private float cooldownSpawn = 3;
-    [SerializeField] private int enemiesToSpawn = 30;
-    
+    [SerializeField] private float cooldownSpawn = 1;
+    [SerializeField] private int wave = 1;
+    [SerializeField] private int waveEnemiesMultiplier = 2;
+    [SerializeField] private float waveTimer = 20;
+    [SerializeField] private float waveTimerMultiplier = 1;
+
+    private int enemiesToSpawnForWave = 2;
+    private float waveTimerCount;
     private int enemiesSpawned = 0;
     private Vector3 spawnPosition;
     private bool spawned;
     private bool isOnMap;
     private bool isColliding;
     private LayerMask whatIsGround;
+    private bool waveIsStarted;
     
     // Start is called before the first frame update
     void Start()
     {
-
         whatIsGround = LayerMask.GetMask("Walkable");
-
+        waveTimerCount = waveTimer;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (waveTimerCount > 0)
+        {
+            waveTimerCount -= Time.deltaTime;
+            ContinueWave();
+        }
+        else if(enemiesSpawned == enemiesToSpawnForWave || waveTimerCount <= 0)
+        {
+            RestartWave();
+            wave++;
+        }
+        
+    }
+
+    private void ContinueWave()
+    {
+        if (enemiesSpawned == 0)
+        {
+            CalculateEnemiesToSpawn();
+        }
+
         spawnPosition = CalculateRandomPosition();
         CheckIfOnMap();
 
-        if (enemiesSpawned < enemiesToSpawn && !spawned && isOnMap && !isColliding )
+        if (enemiesSpawned < enemiesToSpawnForWave && !spawned && isOnMap && !isColliding )
         {
             SpawnEnemy(spawnPosition);
             enemiesSpawned++;
             StartCoroutine(SpawnCooldown());
         }
+    }
+
+    private void RestartWave()
+    {
+        waveTimerCount = waveTimer + CalculateWaveTimer();
+        enemiesSpawned = 0;
     }
 
     private Vector3 CalculateRandomPosition()
@@ -63,7 +95,15 @@ public class SpawnManager : MonoBehaviour
         isColliding = (collision.gameObject.CompareTag("Player") && collision.gameObject.layer != whatIsGround);
     }
 
-    
+    private void CalculateEnemiesToSpawn()
+    {
+        enemiesToSpawnForWave = (int)Math.Pow(waveEnemiesMultiplier, wave);
+    }
+
+    private float CalculateWaveTimer()
+    {
+        return (float)Math.Pow(waveTimerMultiplier, wave);
+    }
 
     private IEnumerator SpawnCooldown()
     {

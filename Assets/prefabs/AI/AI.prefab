@@ -520,6 +520,7 @@ GameObject:
   - component: {fileID: -7831403736614197547}
   - component: {fileID: 238090744330116215}
   - component: {fileID: 3629454758127316051}
+  - component: {fileID: 1033800469689410243}
   m_Layer: 0
   m_Name: AI
   m_TagString: AI
@@ -639,6 +640,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23dcd64194996f143b5323ca48711931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1033800469689410243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5103561869104179449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31407fca4638b7044b15e64ef356a3a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageText: {fileID: 62767525343709529, guid: 8ae30e4b644e31a4987def228dced250, type: 3}
+  offset: {x: 0, y: 45, z: 0}
 --- !u!1 &6305009829978253447
 GameObject:
   m_ObjectHideFlags: 0

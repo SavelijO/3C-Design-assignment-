@@ -53,14 +53,7 @@ public class AIAnimation : MonoBehaviour
         myAnimator.SetBool("walking", false);
         myAnimator.SetBool("hitting", false);
     }
-    
-    private IEnumerator AttackCoolDown()
-    {
-        alreadyAttacked = true;
-        yield return new WaitForSeconds(aiScript.attackCooldown);
-        alreadyAttacked = false;
-    }
-    
+
     private IEnumerator HitAnimationCooldown()
     {
         yield return new WaitForSeconds(hitAnimationDuration);

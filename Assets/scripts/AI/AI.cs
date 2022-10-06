@@ -37,6 +37,8 @@ public class AI : MonoBehaviour
     public bool isAttacking;
     private float sphereHitRadius = 2;
     public bool hitted;
+    private EnemyDamage myEnemyDamage;
+    private float attackDelay = 0.5f;
     
     //Color variables
     private Gradient gradient;
@@ -54,6 +56,7 @@ public class AI : MonoBehaviour
         myAgent = this.GetComponent<NavMeshAgent>();
         player = GameObject.Find("player");
         myAgent.speed = Random.Range(speedRangeBottom, speedRangeTop);
+        myEnemyDamage = this.GetComponent<EnemyDamage>();
         
         //Create color keys for gradient
         gradient = new Gradient();
@@ -120,11 +123,8 @@ public class AI : MonoBehaviour
 
     private void Attack()
     {
-        if (Physics.CheckSphere(transform.position + transform.forward * 2, sphereHitRadius, whatIsPlayer) && hitted)
-        {
-            Debug.LogError("Hitted");
-            //player.TakeDamage(damage);
-        }
+        StartCoroutine(AttackDelay());
+        
     }
     private void DestroyYourself()
     {
@@ -145,10 +145,21 @@ public class AI : MonoBehaviour
         myAgent.enabled = true;
     }
 
+    private IEnumerator AttackDelay()
+    {
+        yield return new WaitForSeconds(attackDelay);
+        if (Physics.CheckSphere(transform.position + transform.forward * 2, sphereHitRadius, whatIsPlayer) && !hitted)
+        {
+            Debug.LogError("Hitted");
+            player.GetComponent<playerController>().TakeDamage(damage);
+        }
+    }
+
     public void ReduceHealth(int bulletDamage)
     {
         this.health -= bulletDamage;
         ChangeColor();
+        myEnemyDamage.SpawnDamageText(bulletDamage);
     }
     
     private void OnTriggerEnter(Collider collision)
