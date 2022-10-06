@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject[] enemies;
     [SerializeField] private int rangeOfSpawn = 50;
     [SerializeField] private float cooldownSpawn = 1;
-    [SerializeField] private int wave = 1;
+    [SerializeField] public int wave = 1;
     [SerializeField] private float waveEnemiesMultiplier = 2;
     [SerializeField] private float waveTimer = 20;
     [SerializeField] private float waveTimerMultiplier = 1;
