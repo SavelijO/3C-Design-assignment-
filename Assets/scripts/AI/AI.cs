@@ -36,10 +36,17 @@ public class AI : MonoBehaviour
     private bool attacked;
     public bool isAttacking;
     private float sphereHitRadius = 2;
+    public bool hitted;
     
     //Color variables
     private Gradient gradient;
+    [SerializeField] private GameObject body;
+    [SerializeField] private GameObject leftBackLeg;
+    [SerializeField] private GameObject leftFrontLeg;
+    [SerializeField] private GameObject rightBackLeg;
+    [SerializeField] private GameObject rightFrontLeg;
 
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +54,6 @@ public class AI : MonoBehaviour
         myAgent = this.GetComponent<NavMeshAgent>();
         player = GameObject.Find("player");
         myAgent.speed = Random.Range(speedRangeBottom, speedRangeTop);
-        //myRigidbody = this.GetComponent<Rigidbody>();
         
         //Create color keys for gradient
         gradient = new Gradient();
@@ -77,7 +83,9 @@ public class AI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
         AIMovement();
+        
     }
 
     private void AIMovement()
@@ -112,7 +120,7 @@ public class AI : MonoBehaviour
 
     private void Attack()
     {
-        if (Physics.CheckSphere(transform.position + transform.forward * 2, sphereHitRadius, whatIsPlayer))
+        if (Physics.CheckSphere(transform.position + transform.forward * 2, sphereHitRadius, whatIsPlayer) && hitted)
         {
             Debug.LogError("Hitted");
             //player.TakeDamage(damage);
@@ -155,7 +163,11 @@ public class AI : MonoBehaviour
     //Change AI color based on its health
     private void ChangeColor()
     {
-        this.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", gradient.Evaluate(health/100f));
+        body.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", gradient.Evaluate(health/100f));
+        leftBackLeg.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", gradient.Evaluate(health/100f));
+        leftFrontLeg.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", gradient.Evaluate(health/100f));
+        rightBackLeg.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", gradient.Evaluate(health/100f));
+        rightFrontLeg.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", gradient.Evaluate(health/100f));
     }
 
     private void CreateGradient()

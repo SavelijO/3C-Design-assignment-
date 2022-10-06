@@ -566,6 +566,12 @@ MonoBehaviour:
   damage: 20
   attackCooldown: 3
   isAttacking: 0
+  hitted: 0
+  body: {fileID: 646824578807357908}
+  leftBackLeg: {fileID: 1983629727449415371}
+  leftFrontLeg: {fileID: 5020937501617984893}
+  rightBackLeg: {fileID: 7269328641854804129}
+  rightFrontLeg: {fileID: 7908037647663600699}
 --- !u!65 &5588105601776620561
 BoxCollider:
   m_ObjectHideFlags: 0

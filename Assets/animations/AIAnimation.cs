@@ -24,11 +24,7 @@ public class AIAnimation : MonoBehaviour
         if (aiScript.isAttacking && !alreadyAttacked)
         {
             Attack();
-            //Debug.Log(myAnimator.GetBool("walking") + " " + myAnimator.GetBool("hitting") + Time.deltaTime);
-            //StartCoroutine(AttackCoolDown());
-            //Debug.Log(myAnimator.GetBool("walking") + " " + myAnimator.GetBool("hitting") + Time.deltaTime);
             StartCoroutine(HitAnimationCooldown());
-            //Debug.Log(myAnimator.GetBool("walking") + " " + myAnimator.GetBool("hitting") + Time.deltaTime);
         }
         else if (aiScript.isMoving)
         {
@@ -38,13 +34,6 @@ public class AIAnimation : MonoBehaviour
         {
             Idle();
         }
-        
-        if (myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.6f)
-        {
-            //Debug.Log("Start hitting");
-        }
-
-
     }
 
     private void Attack()
