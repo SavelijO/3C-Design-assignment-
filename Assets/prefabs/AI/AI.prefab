@@ -558,7 +558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedRangeTop: 15
-  speedRangeBottom: 6
+  speedRangeBottom: 10
   isMoving: 0
   sphereRangeRadius: 2
   health: 100

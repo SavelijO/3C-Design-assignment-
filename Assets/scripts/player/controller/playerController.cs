@@ -80,7 +80,7 @@ public class playerController : MonoBehaviour
 
         if (health <= 0)
         {
-            Debug.Log("Dead");
+            
             GamePad.SetVibration(0, 0f, 0f);
         }
         
@@ -109,7 +109,7 @@ public class playerController : MonoBehaviour
 
     public void RestoreDrain()
     {
-        health = Mathf.Clamp(health+10f, 0f, 100f);
+        health = Mathf.Clamp(health+5f, 0f, 100f);
         healthDrain = Mathf.Clamp(healthDrain - 0.1f, 0f, 0.3f);
     }
     

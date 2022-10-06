@@ -177,7 +177,6 @@ public class AI : MonoBehaviour
         myAgent.enabled = false;
         if (Physics.CheckSphere(transform.position + transform.forward * 2, sphereHitRadius, whatIsPlayer) && !hitted)
         {
-            Debug.LogError("Hitted");
             player.GetComponent<playerController>().TakeDamage(damage);
         }
         yield return new WaitForSeconds(0.15f);

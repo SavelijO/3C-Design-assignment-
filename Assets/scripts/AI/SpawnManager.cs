@@ -23,7 +23,9 @@ public class SpawnManager : MonoBehaviour
     private bool spawned;
     private bool isOnMap;
     private bool isColliding;
+    private bool isOnObstacle;
     private LayerMask whatIsGround;
+    private LayerMask whatIsObstacle;
     private bool waveIsStarted;
     private int enemiesKilled = 0;
     
@@ -32,20 +34,20 @@ public class SpawnManager : MonoBehaviour
     {
         whatIsGround = LayerMask.GetMask("Walkable");
         waveTimerCount = waveTimer;
+        whatIsGround = LayerMask.GetMask("Obstacle");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        Debug.LogError(enemiesKilled + " " + enemiesToSpawnForWave);
         
-        if (waveTimerCount > 0 || enemiesKilled < enemiesToSpawnForWave)
+        if (waveTimerCount > 0 && enemiesKilled < enemiesToSpawnForWave)
         {
             waveTimerCount -= Time.deltaTime;
             ContinueWave();
         }
-        else if(enemiesSpawned == enemiesToSpawnForWave || waveTimerCount <= 0 || enemiesKilled == enemiesToSpawnForWave)
+        else if(waveTimerCount <= 0 || enemiesKilled == enemiesToSpawnForWave)
         {
             RestartWave();
             wave++;
@@ -62,8 +64,9 @@ public class SpawnManager : MonoBehaviour
 
         spawnPosition = CalculateRandomPosition();
         CheckIfOnMap();
+        CheckIfOnObstacle();
 
-        if (enemiesSpawned < enemiesToSpawnForWave && !spawned && isOnMap && !isColliding )
+        if (enemiesSpawned < enemiesToSpawnForWave && !spawned && isOnMap && !isColliding && !isOnObstacle )
         {
             SpawnEnemy(spawnPosition);
             enemiesSpawned++;
@@ -92,6 +95,11 @@ public class SpawnManager : MonoBehaviour
     private void CheckIfOnMap()
     {
         isOnMap = Physics.CheckSphere(spawnPosition, 2f, whatIsGround);
+    }
+    
+    private void CheckIfOnObstacle()
+    {
+        isOnObstacle = Physics.CheckSphere(spawnPosition, 2f, whatIsObstacle);
     }
 
     private void OnCollisionEnter(Collision collision)
