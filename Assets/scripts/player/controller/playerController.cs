@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using XInputDotNetPure;
 
 public class playerController : MonoBehaviour
@@ -49,6 +50,9 @@ public class playerController : MonoBehaviour
     [SerializeField] private Camera rayCam;
     [SerializeField] private Transform rayCamPivot;
 
+    [Header("")]
+    [SerializeField] GameObject endScreen;
+
     private bool isMoving = false;
     private bool isDashing = false;
     private bool isCollidingWithScenery = false;
@@ -80,8 +84,8 @@ public class playerController : MonoBehaviour
 
         if (health <= 0)
         {
-            
             GamePad.SetVibration(0, 0f, 0f);
+            SceneManager.LoadScene("3C 1");
         }
         
 

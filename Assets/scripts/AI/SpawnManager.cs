@@ -18,8 +18,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject[] spawnPoints;
 
     private int enemiesToSpawnForWave = 2;
-    private float waveTimerCount;
-    private int enemiesSpawned = 0;
+    public float waveTimerCount;
+    public int enemiesSpawned = 0;
     private Vector3 spawnPosition;
     private bool spawned;
     private bool isColliding;
@@ -27,7 +27,7 @@ public class SpawnManager : MonoBehaviour
     private LayerMask whatIsGround;
     private LayerMask whatIsObstacle;
     private bool waveIsStarted;
-    private int enemiesKilled = 0;
+    public int enemiesKilled = 0;
     
     // Start is called before the first frame update
     void Start()

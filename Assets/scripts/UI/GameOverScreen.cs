@@ -7,15 +7,10 @@ using UnityEngine.SceneManagement;
 public class GameOverScreen : MonoBehaviour
 {
     public Text wavesSurvivedText;
-    public void SetUp(int score)
-    {
-        gameObject.SetActive(true);
-        wavesSurvivedText.text = score.ToString();
-    }
 
     public void RestartButton()
     {
-        SceneManager.LoadScene("3C");
+        SceneManager.LoadScene("3C 1");
     }
 
     public void QuitGame()
