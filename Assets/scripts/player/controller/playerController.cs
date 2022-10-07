@@ -85,7 +85,7 @@ public class playerController : MonoBehaviour
         if (health <= 0)
         {
             GamePad.SetVibration(0, 0f, 0f);
-            SceneManager.LoadScene("3C 1");
+            SceneManager.LoadScene("Game");
         }
         
 
