@@ -557,14 +557,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c2575167ba42d547a6d94121d1b97c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedRangeTop: 15
-  speedRangeBottom: 10
+  speedRangeTop: 16
+  speedRangeBottom: 11.5
   isMoving: 0
   sphereRangeRadius: 2
   health: 100
   pushback: 20
   recoilCooldown: 0.2
-  damage: 20
+  damage: 25
   attackCooldown: 3
   isAttacking: 0
   hitted: 0
@@ -597,7 +597,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.01
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 19
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0

@@ -28,6 +28,7 @@ public class SpawnManager : MonoBehaviour
     private LayerMask whatIsObstacle;
     private bool waveIsStarted;
     public int enemiesKilled = 0;
+    private int spawnPointsCount;
     
     // Start is called before the first frame update
     void Start()
@@ -35,6 +36,9 @@ public class SpawnManager : MonoBehaviour
         whatIsGround = LayerMask.GetMask("Walkable");
         waveTimerCount = waveTimer;
         whatIsGround = LayerMask.GetMask("Obstacle");
+        spawnPointsCount = spawnPoints.Length;
+        
+        //InvokeRepeating("RandomSpawns", 180, 4);
 
     }
 
@@ -75,14 +79,14 @@ public class SpawnManager : MonoBehaviour
 
     private void RestartWave()
     {
-        waveTimerCount = waveTimer + CalculateWaveTimer();
+        waveTimerCount = Mathf.Clamp(waveTimer + CalculateWaveTimer(), 0, 120);
         enemiesSpawned = 0;
         enemiesKilled = 0;
     }
 
     private Vector3 CalculateRandomPosition()
     {
-        int randomSpawnPoint = Random.Range(0, 4);
+        int randomSpawnPoint = Random.Range(0, spawnPointsCount);
         return spawnPoints[randomSpawnPoint].transform.position;
     }
     
@@ -121,5 +125,10 @@ public class SpawnManager : MonoBehaviour
     public void EnemyDied()
     {
         enemiesKilled++;
+    }
+
+    void RandomSpawns()
+    {
+        SpawnEnemy(spawnPoints[Random.Range(0, spawnPointsCount)].transform.position);
     }
 }
