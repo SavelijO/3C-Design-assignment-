@@ -10,23 +10,14 @@ public class TESTplayer : MonoBehaviour
         
     public HealthBar healthBar;
 
-        
-
-    /*/ammo
-    private UImanager uiManager;
-    */
+               
 
     private void Start()
     {
         //health
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-
-        /*/ammo
-        uiManager = GameObject.Find("Canvas").GetComponent<UImanager>();
-        */
-
-        
+             
            
     }
 
@@ -48,19 +39,6 @@ public class TESTplayer : MonoBehaviour
         
     }
 
-    /*/ammo: in function for shooting
-    //example:
-    void Shoot()
-    {
-        uiManager.UpdateAmmo(currentAmmo);
-    }*/
-
-    /*/ammo, reload
-    IEnumerator Reload()
-    {
-        uiManager.UpdateAmmo(currentAmmo);
-    }*/
-
-
+   
     
 }
