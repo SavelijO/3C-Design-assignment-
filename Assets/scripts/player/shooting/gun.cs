@@ -22,6 +22,7 @@ public class gun : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject impact;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private Animator animator;
 
     private Vector3 correctedForward;
     private Vector3 correctedRight;
@@ -63,14 +64,22 @@ public class gun : MonoBehaviour
     void Fire()
     {
 
-        CreateArc();    
-        
+        CreateArc();
+        StartCoroutine(FireAnim());
         for (int i = 0; i < bulletPerShotCount; i++)
 		{
             HitScan(i);
         }
         shotCount--;
         nextFire = Time.time + fireRate;
+    }
+
+    IEnumerator FireAnim()
+    {
+        animator.SetBool("isShootingAnim", true);
+        animator.SetBool("isReloadingAnim", false);
+        yield return new WaitForSeconds(0.2f);
+        animator.SetBool("isShootingAnim", false);
     }
 
     void CreateArc()
@@ -136,8 +145,10 @@ public class gun : MonoBehaviour
         float currentLoaded = 0f;
         for (int i = shotCount; i < maxShotCount; i++)
         {
+            animator.SetBool("isReloadingAnim", true);
             currentLoaded++;
             yield return new WaitForSeconds(firstBulletReloadTime - currentLoaded * additionalBulletReloadBonus);
+            animator.SetBool("isReloadingAnim", false);
             if (stopReloading) { break; }
             shotCount++;
             nextFire = Time.time + fireRate;
