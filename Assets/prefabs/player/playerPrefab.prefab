@@ -510,6 +510,7 @@ MonoBehaviour:
   rotSpeed: 2.7
   rayCam: {fileID: 5993895448137448003}
   rayCamPivot: {fileID: 5993895448375065426}
+  endScreen: {fileID: 0}
 --- !u!65 &5993895448019394638
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1465,6 +1466,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 6992830919214742410, guid: 6e0019c0323fbe24985461f8190445ce, type: 3}
   impact: {fileID: 9203455347926585830, guid: 49a2c3a9d898eff47996a357db73cec7, type: 3}
   firePoint: {fileID: 5993895449162282548}
+  animator: {fileID: 0}
   shotCount: 0
 --- !u!95 &1869992046714315068
 Animator:
