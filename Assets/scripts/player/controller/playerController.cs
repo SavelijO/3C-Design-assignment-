@@ -74,6 +74,21 @@ public class playerController : MonoBehaviour
     void Update()
     {
         time = Time.time;
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            if (isUsingKeyboard)
+            {
+                isUsingKeyboard = false;
+                Cursor.visible = false;
+            }
+            else
+            {
+                isUsingKeyboard = true;
+                Cursor.visible = true;
+            }
+        }
+        
         if (isUsingKeyboard) { GetKeyboardInput(); }
         else { GetControllerInput();}
         GetMovSpeed();
